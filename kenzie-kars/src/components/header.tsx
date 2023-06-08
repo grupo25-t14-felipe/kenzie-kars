@@ -7,9 +7,10 @@ import { useEffect, useState } from "react";
 
 const Header = () => {
   const [menu, setMenu] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
+  const [windowWidth, setWindowWidth] = useState<number>(0);
+  
   useEffect(() => {
+    setWindowWidth(window.innerWidth)
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
     };
@@ -20,12 +21,11 @@ const Header = () => {
   }, []);
 
   return (
-    <header className="relative shadow-lg">
+    <header className="fixed w-full top-0 left-0 shadow-sm bg-whiteFixed z-20">
       <div
-        className={`w-full max-w-7xl flex ${
-            windowWidth < 768 && menu ? "flex-col" : "flex-row items-center"
+        className={`w-full flex ${
+          windowWidth < 768 && menu ? "flex-col" : "flex-row items-center"
         } justify-between  px-6 mx-auto`}>
-
         <div className="py-6">
           <Image className="" width={153} height={27} src={logo} alt="logo motors shop" />
         </div>
@@ -33,7 +33,12 @@ const Header = () => {
         {windowWidth < 768 ? (
           menu ? (
             <>
-              <GrFormClose className="w-6 h-6 absolute right-6 top-6 cursor-pointer" onClick={()=>{setMenu(false)}}/>
+              <GrFormClose
+                className="w-6 h-6 absolute right-6 top-6 cursor-pointer"
+                onClick={() => {
+                  setMenu(false);
+                }}
+              />
               <nav className=" w-full flex flex-col gap-8 font-semibold py-6">
                 <Link className="whitespace-nowrap" href={"/login"}>
                   Fazer login
@@ -45,7 +50,12 @@ const Header = () => {
               </nav>
             </>
           ) : (
-            <BiMenu className="w-6 h-6 absolute right-6 top-6 cursor-pointer" onClick={()=>{setMenu(true)}}/>
+            <BiMenu
+              className="w-6 h-6 absolute right-6 top-6 cursor-pointer"
+              onClick={() => {
+                setMenu(true);
+              }}
+            />
           )
         ) : (
           <nav className=" w-80 flex justify-around items-center font-semibold h-20 border-l">
