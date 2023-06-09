@@ -78,6 +78,21 @@
     .medium-brand-1:disabled {
         @apply bg-brand-3 border-[1.5px] border-solid border-brand-3 rounded text-brand-4;
     }
+    
+    .small-brand-1 {
+        @apply bg-brand-1 border-[1.5px] border-solid border-brand-1 rounded text-whiteFixed py-[8px] px-[20px];
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+    }
+    
+    .small-brand-1:hover {
+        @apply bg-brand-2 border-[1.5px] border-solid border-brand-2;
+    }
+
+    .small-brand-1:disabled {
+        @apply bg-brand-3 border-[1.5px] border-solid border-brand-3 rounded text-brand-4;
+    }
 
     .big-brand-opacity {
         @apply bg-brand-4 border-[1.5px] border-solid border-brand-4 rounded text-brand-1 py-[12px] px-[28px];
@@ -266,4 +281,5 @@
     .big-sucess:hover {
         @apply bg-sucess-2 border-[1.5px] border-solid border-sucess-2;
     }
+
 }
