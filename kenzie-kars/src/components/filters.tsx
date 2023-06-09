@@ -44,18 +44,18 @@ const Filters = () => {
       <h3 className=" font-semibold text-lg">Km</h3>
 
       <div className="flex gap-4">
-        <input className="bg-grey-4 w-1/2" type="text" />
-        <input className="bg-grey-4 w-1/2" type="text" />
+        <input className="bg-grey-5 w-1/2 input-text text-center" type="text" placeholder="Mínima"/>
+        <input className="bg-grey-5 w-1/2 input-text text-center" type="text" placeholder="Máxima"/>
       </div>
 
       <h3 className=" font-semibold text-lg">Preço</h3>
 
       <div className="flex gap-4">
-        <input className="bg-grey-4 w-1/2" type="text" />
-        <input className="bg-grey-4 w-1/2" type="text" />
+        <input className="bg-grey-5 w-1/2 input-text text-center" type="text" placeholder="Mínimo"/>
+        <input className="bg-grey-5 w-1/2 input-text text-center" type="text" placeholder="Máximo"/>
       </div>
 
-      <button className="mt-8"> Ver anúncios</button>
+      <button className="mt-8 medium-brand-1"> Ver anúncios</button>
     </aside>
   );
 };

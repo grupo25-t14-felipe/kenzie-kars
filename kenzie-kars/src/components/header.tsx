@@ -44,7 +44,7 @@ const Header = () => {
                   Fazer login
                 </Link>
 
-                <Link className="p-3 border border-grey-3 rounded" href={"/register"}>
+                <Link className="big-outline-2" href={"/register"}>
                   Cadastrar
                 </Link>
               </nav>
@@ -58,12 +58,12 @@ const Header = () => {
             />
           )
         ) : (
-          <nav className=" w-80 flex justify-around items-center font-semibold h-20 border-l">
+          <nav className=" w-80 flex justify-around items-center font-semibold h-20 border-l border-grey-4">
             <Link className="whitespace-nowrap" href={"/login"}>
               Fazer login
             </Link>
 
-            <Link className="py-3 px-6 border border-grey-3 rounded" href={"/register"}>
+            <Link className="big-outline-2" href={"/register"}>
               Cadastrar
             </Link>
           </nav>

@@ -13,7 +13,7 @@
     }
 
     .medium-grey-1 {
-        @apply  bg-grey-0 border-[1.5px] border-solid border-grey-0 rounded text-whiteFixed py-[12px] px-[20px] -medium-text;
+        @apply  bg-grey-0 border-[1.5px] border-solid border-grey-0 rounded text-whiteFixed py-[12px] px-[20px] ;
         font-style: normal;
         font-weight: 600;
         font-size: 14px;
