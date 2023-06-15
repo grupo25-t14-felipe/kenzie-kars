@@ -4,11 +4,11 @@ import { Inter } from "next/font/google";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import carIntro from "../assets/carIntro.png";
-import Profile from "@/components/profile";
+import ProfileIcon from "@/components/profileIcon";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Home() {
+export default function Announcement() {
   const [windowWidth, setWindowWidth] = useState<number>(0);
   const [openFilter, setOpenFilter] = useState(false);
 
@@ -124,7 +124,7 @@ export default function Home() {
                 <ul className="flex flex-col gap-8">
                   <li className="flex flex-col gap-4">
                     <div className="flex items-center gap-4">
-                      <Profile name="Name" />
+                      <ProfileIcon name="Name" />
                       <p className="text-grey-4 text-[12px]">- há 3 dias</p>
                     </div>
                     <p className="text-grey-2">
@@ -136,7 +136,7 @@ export default function Home() {
                   </li>
                   <li className="flex flex-col gap-4">
                     <div className="flex items-center gap-4">
-                      <Profile name="Name" />
+                      <ProfileIcon name="Name" />
                       <p className="text-grey-4 text-[12px]">- há 3 dias</p>
                     </div>
                     <p className="text-grey-2">
@@ -149,7 +149,7 @@ export default function Home() {
                 </ul>
               </div>
               <div className="flex flex-col gap-8 bg-whiteFixed rounded p-8 ">
-                <Profile name="Name" />
+                <ProfileIcon name="Name" />
                 <form className="flex flex-col gap-8">
                   <textarea
                     className="border border-grey-5 h-[130px] p-4 resize-none rounded"
