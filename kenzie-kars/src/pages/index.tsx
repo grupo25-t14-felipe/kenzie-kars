@@ -46,7 +46,9 @@ export default function Home() {
           windowWidth < 768 ? "flex-col items-center" : "flex-row-reverse justify-between"
         } flex min-h-screen relative ${inter.className} gap-20 pb-20 pt-14`}>
         <ul className="w-full md:w-[70%] flex overflow-auto md:flex-wrap relative h-full">
-          <Card/>
+          <Card>
+            <span></span>
+          </Card>
           <div className="w-full font-semibold md:flex gap-8 justify-center items-center hidden">
             <p className="text-grey-3">
               <span className="text-grey-2">1</span> de 2

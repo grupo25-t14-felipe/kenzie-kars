@@ -27,11 +27,12 @@ export default function Announcement() {
     <>
       <Header />
       <main
-        className={`flex min-h-screen relative ${inter.className} gap-20 pt-[75px] bg-grey-8 body-1-400`}>
-        <div className="w-full">
+        className={`flex min-h-screen relative ${inter.className} gap-20 pt-[75px] bg-grey-8 body-1-400 z-10`}>
+        <span className="absolute top-0 left-0 bg-brand-1 w-full h-[600px] md:h-[680px] z-20"></span>
+        <div className="w-full z-30">
           <div className="md:flex w-full">
             <div className="w-full md:w-[60%]">
-              <div className="bg-brand-1 flex flex-col gap-4 items-center py-16 px-4 h-[500px] md:h-[600px]">
+              <div className="flex flex-col gap-4 items-center py-16 px-4 h-[500px] md:h-[600px]">
                 <div className="min-h-[350px] h-[350px] bg-whiteFixed rounded overflow-hidden">
                   <Image
                     className="w-full h-full object-cover object-center"
@@ -66,7 +67,6 @@ export default function Announcement() {
               </div>
             </div>
             <div className="w-full md:w-[40%] relative">
-              <span className=" absolute top-0 left-0 md:bg-brand-1 w-full h-[600px]"></span>
               <div className="p-4 flex flex-col gap-8 relative bottom-12 md:bottom-[-50px] ">
                 <ul className="flex flex-wrap bg-whiteFixed px-8  pt-20 pb-10 w-full justify-items-center relative justify-between gap-y-8 rounded md:max-w-[440px]">
                   <h3 className="absolute top-8 left-8 heading-6-600 ">Fotos</h3>
