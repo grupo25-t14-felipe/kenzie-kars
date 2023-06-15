@@ -5,11 +5,31 @@
         @apply p-[8px] border-[1.5px] border-solid border-grey-7 rounded text-grey-3 font-normal not-italic text-base;
     }
 
+    input.input-text + span {
+        @apply text-grey-3 font-normal not-italic text-base;
+        font-size: 12px;
+        color: black;
+    }
+    
     input.input-text:hover {
         @apply bg-grey-8 border-[1.5px] border-solid border-grey-8;
     }
-
+    
     input.input-text:focus {
         @apply bg-grey-9 border-[1.5px] border-solid border-brand-2 text-grey-1;
+    }
+    
+    input.input-text:invalid {
+        @apply border-[1.5px] border-solid border-b-alert-1;
+    }
+    
+    input.input-text:invalid + span::after {
+        position: relative;
+        content: "Campo obrigatório";
+    }
+
+    input.input-text:valid {
+        @apply border-[1.5px] border-solid border-b-sucess-1;
+        margin-bottom: 21px;
     }
 }

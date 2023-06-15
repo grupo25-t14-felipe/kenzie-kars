@@ -7,12 +7,15 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { GrFormClose } from "react-icons/gr";
 import carIntro from "../assets/carIntro.png";
+import RegisterAnnouncement, { getBrands } from "@/components/registerAnnouncement";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const [windowWidth, setWindowWidth] = useState<number>(0);
   const [openFilter, setOpenFilter] = useState(false);
+  const [createAd, setCreateAd] = useState(false)
+  const [brands, setBrands] = useState<string[]>()
 
   useEffect(() => {
     setWindowWidth(window.innerWidth);
@@ -27,8 +30,14 @@ export default function Home() {
 
   return (
     <>
+      {createAd && <RegisterAnnouncement setCreateAd={setCreateAd} brands={brands} />}
       <Header />
       <div className="h-[627px] md:h-[544px] w-full text-whiteFixed relative mt-[75px]">
+        <button type="button" className="medium-brand-1" onClick={async () => {
+          const brands = await getBrands()
+          setBrands(brands)
+          setCreateAd( true )
+        }}>Open Modal</button>
         <Image
           className="w-full h-full object-cover absolute mix-blend-overlay"
           src={carIntro}
