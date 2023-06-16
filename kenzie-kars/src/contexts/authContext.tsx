@@ -45,13 +45,13 @@ export const AuthProvider = ({ children }: loginProps) => {
 
         return response.data.token;
       })
-      .then(() => {
+      .then((response) => {
         router.push("/");
         // const decoded: any = jwt_decode(response);
         // console.log(decoded.buyer);
 
-        // if(decoded === false) {
-        //   router.push("/admin")
+        // if (decoded === false) {
+        //   router.push("/admin");
         // }
       })
       .catch((err) => {
