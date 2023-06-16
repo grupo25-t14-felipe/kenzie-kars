@@ -281,5 +281,11 @@
     .big-sucess:hover {
         @apply bg-sucess-2 border-[1.5px] border-solid border-sucess-2;
     }
+    .big-grey-1 {
+        @apply bg-whiteFixed border-[1.5px] border-solid border-grey-7 rounded text-grey-0 py-[12px] px-[28px];
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+    }
 
 }
