@@ -7,10 +7,13 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { GrFormClose } from "react-icons/gr";
 import carIntro from "../assets/carIntro.png";
+import { GetServerSideProps } from "next";
+import api from "@/services/api";
+import { iAllAnnouncements } from "@/schemas/announcement.schema";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Home() {
+export default function Home({ announcements }: any) {
   const [windowWidth, setWindowWidth] = useState<number>(0);
   const [openFilter, setOpenFilter] = useState(false);
 
@@ -46,11 +49,11 @@ export default function Home() {
           windowWidth < 768 ? "flex-col items-center" : "flex-row-reverse justify-between"
         } flex min-h-screen relative ${inter.className} gap-20 pb-20 pt-14`}>
         <ul className="w-full md:w-[70%] flex overflow-auto md:flex-wrap relative h-full">
-          <Card>
-            <div>
-              <p></p>
-            </div>
-          </Card>
+          {announcements.map((announcement: any) => (
+            <Card key={announcement.id} announcement={announcement}>
+              <span></span>
+            </Card>
+          ))}
           <div className="w-full font-semibold md:flex gap-8 justify-center items-center hidden">
             <p className="text-grey-3">
               <span className="text-grey-2">1</span> de 2
@@ -96,3 +99,10 @@ export default function Home() {
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const response = await api.get<iAllAnnouncements>(`/announcements`);
+  return {
+    props: { announcements: response.data }
+  };
+};
