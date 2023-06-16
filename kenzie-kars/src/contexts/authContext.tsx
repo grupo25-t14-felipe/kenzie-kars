@@ -2,11 +2,9 @@ import { loginData } from "@/schemas/user.schema";
 import api from "@/services/api";
 import { useRouter } from "next/router";
 import { setCookie } from "nookies";
-import { ReactNode, createContext, useContext } from "react";
 import jwt_decode from "jwt-decode";
 import { ReactNode, createContext, useContext, useState } from "react";
 import { UserData } from "@/schemas/user.schema";
-
 
 interface loginProps {
   children: ReactNode;
@@ -46,19 +44,24 @@ export const AuthProvider = ({ children }: loginProps) => {
 
         return response.data.token;
       })
-      .then((response) => {
-        const decoded: any = jwt_decode(response);
-        console.log(decoded.buyer);
+      .then(() => {
+        router.push("/");
+        // const decoded: any = jwt_decode(response);
+        // console.log(decoded.buyer);
 
-        if(decoded === false) {
-          router.push("/admin")
-        }
+        // if(decoded === false) {
+        //   router.push("/admin")
+        // }
       })
       .catch((err) => {
         console.log(err);
       });
   };
-  return <AuthContext.Provider value={{ login, register, showModal, setModal }}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ login, register, showModal, setModal }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 export const useAuth = () => {
   const context = useContext(AuthContext);

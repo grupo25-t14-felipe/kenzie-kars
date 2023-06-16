@@ -288,7 +288,7 @@
         font-size: 16px;
     }
 
-=======
+
   .big-grey-1 {
     @apply bg-grey-0 border-[1.5px] border-solid border-grey-0 rounded text-whiteFixed py-[12px] px-[28px];
     font-style: normal;
