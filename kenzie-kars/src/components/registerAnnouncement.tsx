@@ -39,7 +39,7 @@ const CreateAnnouncementSchema = z.object({
   description: z.string({ required_error: 'Este campo é obrigatório' }),
   cover_image: z.string({ required_error: 'Este campo é obrigatório' }),
   published: z.boolean({ required_error: 'Este campo é obrigatório' }).default(()=> true ),
-  images: z.array( CreateImageSchema )
+  images: z.array( CreateImageSchema ).optional()
 })
 
 export const getBrands = async () => {
@@ -70,24 +70,33 @@ const RegisterAnnouncement = ({ setCreateAd, brands }: iRegisterAnnouncement) =>
       imageId: `image-${formImages.length+1}`,
       title: `${formImages.length+1}º Imagem da galeria`,
     } ])
-  } 
+  }
   
   const createAd = async ({ images, ...data }: any) => {    
     data['year'] = year;
-    data['fuel'] = fuel;
+    data['mileage'] = +data.mileage
+    data['fuel'] = +fuel;
     data['price_table_fipe'] = fipe;
-
-    const res = await axios.post( 'http://localhost:3000/announcements', data).then( async (res: any) => {
+    
+    return await axios.post( 'http://localhost:3001/announcements', data, {
+      headers: {
+        Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6ImxlbyIsImJ1eWVyIjpmYWxzZSwiaWF0IjoxNjg2OTQ2Nzc1LCJleHAiOjE2ODY5NTAzNzUsInN1YiI6Ijg2OGUzMDA3LTBkZGUtNGMzZC1iNTFiLWZmNjU1ZjNjYWNmNSJ9.7quBZ_LHV9Fx4JuFxuSqCWsw_UjsFjRRsH92Hrc4Cec"
+      }
+    }).then( async (res: any) => {
       if( images ){
-        return await images.map( async (image: typeof CreateImageSchema) => {
-          return await axios.post( `http://localhost:3000/announcements/${res.id}/images`, image ).then( res => res).catch( err => {
-            console.log(err);
+        await images.map( async (image: typeof CreateImageSchema) => {
+          return await axios.post( `http://localhost:3001/announcements/${res.data.id}/image`, image, {
+            headers: {
+              Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6ImxlbyIsImJ1eWVyIjpmYWxzZSwiaWF0IjoxNjg2OTQ2Nzc1LCJleHAiOjE2ODY5NTAzNzUsInN1YiI6Ijg2OGUzMDA3LTBkZGUtNGMzZC1iNTFiLWZmNjU1ZjNjYWNmNSJ9.7quBZ_LHV9Fx4JuFxuSqCWsw_UjsFjRRsH92Hrc4Cec"
+            }
+          }).then( resImage => resImage ).catch( err => {
+            console.error(err);
           })
         })
-      }
-    }).catch( err => { console.log(err) })
 
-    // reset();
+        reset();
+      }
+    }).catch( err => { console.error(err) })
   }
 
   return (
@@ -228,7 +237,7 @@ const RegisterAnnouncement = ({ setCreateAd, brands }: iRegisterAnnouncement) =>
             return(
               <React.Fragment key={imageId}>
                 <label htmlFor={imageId} className="input-label">{title}</label>
-                <input type="text" id={imageId} className="input-text mb-2" placeholder="https://image.com" {...register(`images.${index}.link`)} required />
+                <input type="text" id={imageId} className="input-text mb-2" placeholder="https://image.com" {...register(`images.${index}.link`)} />
               </React.Fragment>
             )
           })}

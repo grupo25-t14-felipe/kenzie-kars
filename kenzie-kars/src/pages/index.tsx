@@ -1,4 +1,4 @@
-import CardList from "@/components/cardList";
+import Card from "@/components/card";
 import Filters from "@/components/filters";
 import Footer from "@/components/footer";
 import Header from "@/components/header";
@@ -8,10 +8,13 @@ import { useEffect, useState } from "react";
 import { GrFormClose } from "react-icons/gr";
 import carIntro from "../assets/carIntro.png";
 import RegisterAnnouncement, { getBrands } from "@/components/registerAnnouncement";
+import { GetServerSideProps } from "next";
+import api from "@/services/api";
+import { iAllAnnouncements } from "@/schemas/announcement.schema";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Home() {
+export default function Home({ announcements }: any) {
   const [windowWidth, setWindowWidth] = useState<number>(0);
   const [openFilter, setOpenFilter] = useState(false);
   const [createAd, setCreateAd] = useState(false)
@@ -54,7 +57,19 @@ export default function Home() {
         className={`${
           windowWidth < 768 ? "flex-col items-center" : "flex-row-reverse justify-between"
         } flex min-h-screen relative ${inter.className} gap-20 pb-20 pt-14`}>
-        <CardList />
+        <ul className="w-full md:w-[70%] flex overflow-auto md:flex-wrap relative h-full">
+          {announcements.map((announcement: any) => (
+            <Card key={announcement.id} announcement={announcement}>
+              <span></span>
+            </Card>
+          ))}
+          <div className="w-full font-semibold md:flex gap-8 justify-center items-center hidden">
+            <p className="text-grey-3">
+              <span className="text-grey-2">1</span> de 2
+            </p>
+            <p className="text-brand-1 cursor-pointer">{"Seguinte >"}</p>
+          </div>
+        </ul>
         {windowWidth < 768 ? (
           openFilter ? (
             <div className=" fixed top-[70px] left-0 w-full bg-whiteFixed z-10 py-20 h-full border-t border-grey-4 overflow-auto">
@@ -93,3 +108,10 @@ export default function Home() {
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const response = await api.get<iAllAnnouncements>(`/announcements`);
+  return {
+    props: { announcements: response.data }
+  };
+};

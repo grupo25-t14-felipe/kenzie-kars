@@ -32,4 +32,11 @@
         @apply border-[1.5px] border-solid border-b-sucess-1;
         margin-bottom: 21px;
     }
+
+    .input-label {
+        @apply text-grey-1;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px
+    }
 }
