@@ -12,7 +12,7 @@ interface loginProps {
 
 interface authProviderData {
   login: (loginData: loginData) => void;
-  register: (userData: UserData) => void;
+  registerSubmit: (userData: UserData) => void;
   showModal: boolean;
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -22,7 +22,8 @@ export const AuthProvider = ({ children }: loginProps) => {
   const router = useRouter();
   const [showModal, setModal] = useState(false);
 
-  const register = (userData: UserData) => {
+  const registerSubmit = (userData: UserData) => {
+    console.log(userData);
     api
       .post("/users", userData)
       .then(() => {
@@ -58,7 +59,7 @@ export const AuthProvider = ({ children }: loginProps) => {
       });
   };
   return (
-    <AuthContext.Provider value={{ login, register, showModal, setModal }}>
+    <AuthContext.Provider value={{ login, registerSubmit, showModal, setModal }}>
       {children}
     </AuthContext.Provider>
   );

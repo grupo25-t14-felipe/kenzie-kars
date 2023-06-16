@@ -12,11 +12,8 @@ const RegisterForm = () => {
   } = useForm<UserData>({
     resolver: zodResolver(userSchema)
   });
-  const { register: registerUser, showModal, setModal } = useAuth();
-  const onFormSubmit = (formData: UserData) => {
-    console.log(formData);
-    registerUser(formData);
-  };
+  const { registerSubmit, showModal, setModal } = useAuth();
+
   return (
     <>
       <div className=" bg-whiteFixed px-[44px] py-[48px] w-[90%] max-w-[411px] h-[80%] max-h-[1,630px] my-[100px] rounded">
@@ -27,7 +24,7 @@ const RegisterForm = () => {
         </div>
         <form
           className="w-full h-full flex flex-col justify-center gap-4"
-          onSubmit={handleSubmit(onFormSubmit)}>
+          onSubmit={handleSubmit(registerSubmit)}>
           <div>
             <label htmlFor="name" className="user-form-label">
               Nome
@@ -107,7 +104,7 @@ const RegisterForm = () => {
                 type="text"
                 placeholder="Digitar descrição"
                 className="input-text w-full"
-                {...register("cpf")}
+                {...register("description")}
               />
             </div>
           </div>
@@ -171,8 +168,8 @@ const RegisterForm = () => {
           <div className="w-full flex flex-col gap-4">
             <p>Tipo de Conta</p>
             <div className="w-full flex justify-between">
-              <button className="big-brand-1">Comprador</button>
-              <button className="border-[1.5px] border-solid rounded text-whiteFixed py-[12px] px-[28px] bg-grey-3">
+              <button type="button" className="big-brand-1">Comprador</button>
+              <button type="button" className="border-[1.5px] border-solid rounded text-whiteFixed py-[12px] px-[28px] bg-grey-3">
                 Anunciante
               </button>
             </div>
