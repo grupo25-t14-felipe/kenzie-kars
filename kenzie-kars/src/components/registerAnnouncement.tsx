@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Options from "./options";
 import axios from "axios";
 
 interface iModel {
@@ -17,6 +16,11 @@ interface iModel {
 interface iRegisterAnnouncement {
   setCreateAd: React.Dispatch<React.SetStateAction<boolean>>,
   brands: string[] | undefined
+}
+
+interface iImageGalery {
+  imageId: string
+  title: string
 }
 
 const CreateImageSchema = z.object({
@@ -52,45 +56,14 @@ const RegisterAnnouncement = ({ setCreateAd, brands }: iRegisterAnnouncement) =>
     resolver: zodResolver( CreateAnnouncementSchema )
   })
   
-  const [formImages, setFormImages] = useState([
-    { imageId: "image-1", title: "1º Imagem da galeria" },
-    { imageId: "image-2", title: "2º Imagem da galeria" }
-  ])
-  const [openBrandOptions, setOpenBrandOptions] = useState(false)
-  const [openModelOptions, setOpenModelOptions] = useState(false)
+  const [formImages, setFormImages] = useState<iImageGalery[]>([])
   const [searchBrand, setSearchBrand] = useState<string>('')
   const [searchModel, setSearchModel] = useState<string>('')
-  const [filterBrand, setFilterBrand] = useState<string[]>([])
-  const [filterModel, setFilterModel] = useState<string[]>([])
   const [allModels, setAllModels] = useState<iModel[]>([])
   const [models, setModels] = useState<string[]>([])
   const [year, setYear] = useState<string>('')
   const [fuel, setFuel] = useState<string>('')
   const [fipe, setFipe] = useState<string>('')
-  
-  useEffect(() => {
-    if( !brands ) return;
-
-    let res: string[] = [];
-    for( const brand of brands ){
-        if( brand.startsWith( searchBrand ) ){
-            res.push( brand );                 
-        }
-    }
-
-    return setFilterBrand( res );
-  }, [searchBrand])
-  
-  useEffect(() => {
-    let res: string[] = []
-    for( const item of models ){
-        if( item.startsWith( searchModel )){
-            res.push( item )
-        }
-    }      
-
-    return setFilterModel( res )
-  }, [searchModel])
 
   const addFormImage = () => {
     setFormImages([ ...formImages, {
@@ -99,11 +72,20 @@ const RegisterAnnouncement = ({ setCreateAd, brands }: iRegisterAnnouncement) =>
     } ])
   } 
   
-  const createAd = async ( {images, ...data}: any ) => {
-    console.log(data);
+  const createAd = async ({ images, ...data }: any) => {    
+    data['year'] = year;
+    data['fuel'] = fuel;
+    data['price_table_fipe'] = fipe;
 
-    // const res = await axios.post( 'http://localhost:3000/announcements', data)
-    // console.log(res);
+    const res = await axios.post( 'http://localhost:3000/announcements', data).then( async (res: any) => {
+      if( images ){
+        return await images.map( async (image: typeof CreateImageSchema) => {
+          return await axios.post( `http://localhost:3000/announcements/${res.id}/images`, image ).then( res => res).catch( err => {
+            console.log(err);
+          })
+        })
+      }
+    }).catch( err => { console.log(err) })
 
     // reset();
   }
@@ -122,28 +104,26 @@ const RegisterAnnouncement = ({ setCreateAd, brands }: iRegisterAnnouncement) =>
           <h3 className="body-2-500 mb-2">Informações do veículo</h3>
           
           <label htmlFor="brand" className="input-label">Marca</label>
-          <input 
-            type="text" 
-            id="brand" 
-            className="input-text" 
-            placeholder="chevrolet" 
-            value={ searchBrand }
-            {...register('brand')} 
-            onClick={() => setOpenBrandOptions( !openBrandOptions )}
-            onChange={ event => setSearchBrand( event.target.value )}
-            required 
-          />
-          <span></span>
-          { openBrandOptions && <Options options={ brands } filter={ filterBrand } id='brand' setState={ setSearchBrand } setCloseOptions={ setOpenBrandOptions } /> }
+          <select 
+            className="p-2.5 mb-2.5"
+            {...register('brand')}
+          >
+            <option value=''>Selecione um marca</option>
+            {
+              brands?.map( brand => {
+                return(
+                  <>
+                    <option onClick={() => setSearchBrand( brand )} value={brand}>{ brand }</option>
+                  </>
+                )
+              })
+            }
+          </select>
           
           <label htmlFor="model" className="input-label">Modelo</label>
-          <input 
-            type="text" 
-            id="model" 
-            className="input-text" 
-            placeholder="bolt ev premier 203cv (elétrico)" 
-            value={ searchModel }
-            {...register('model', { value: searchModel })}
+          <select 
+            className="p-2.5 mb-2.5"
+            {...register('model')}
             onClick={async (event) => {
               event.preventDefault()
               const allModelsRequest = await getModels( searchBrand ).then( res => res ).catch( err => 'Deve escolher a marca primeiro')
@@ -152,13 +132,24 @@ const RegisterAnnouncement = ({ setCreateAd, brands }: iRegisterAnnouncement) =>
               const res = allModelsRequest.map( (model: any) => model.name )
 
               setModels( res )
-              setOpenModelOptions( !openModelOptions )
             }}
-            onChange={ event => setSearchModel( event.target.value )}
-            required 
-          />
-          <span></span>
-          { openModelOptions && <Options options={ models } filter={ filterModel } id='model' setState={ setSearchModel } setCloseOptions={ setOpenModelOptions } /> }
+          >
+            <option value=''>Selecione um modelo</option>
+            {
+              models?.map( model => {
+                return(
+                  <>
+                    <option 
+                      value={model}
+                      onClick={() => {
+                        setSearchModel( model )
+                      }}
+                    >{ model }</option>
+                  </>
+                )
+              })
+            }
+          </select>
           
           <div className="flex flex-row gap-2.5 mb-4">
             <div className="w-1/2">
@@ -237,7 +228,7 @@ const RegisterAnnouncement = ({ setCreateAd, brands }: iRegisterAnnouncement) =>
             return(
               <React.Fragment key={imageId}>
                 <label htmlFor={imageId} className="input-label">{title}</label>
-                <input type="text" id={imageId} className="input-text mb-2" placeholder="https://image.com" {...register(`images.${index}.link`)} />
+                <input type="text" id={imageId} className="input-text mb-2" placeholder="https://image.com" {...register(`images.${index}.link`)} required />
               </React.Fragment>
             )
           })}
