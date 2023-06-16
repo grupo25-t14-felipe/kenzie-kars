@@ -9,7 +9,6 @@ export const userSchema = z.object({
   telephone: z.string().nonempty("Campo obrigatório!"),
   date_of_birth: z.string().nonempty("Campo obrigatório!"),
   description: z.string(),
-  buyer: z.boolean()
 }).refine((data) => data.password === data.confirm, {
   message: "As senhas não são iguais!",
   path: ["confirm"],
