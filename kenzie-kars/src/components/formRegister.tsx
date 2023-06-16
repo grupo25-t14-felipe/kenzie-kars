@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "@/contexts/authContext";
 import Modal from "./modal";
+import { useState } from "react";
 
 const RegisterForm = () => {
   const {
@@ -12,7 +13,25 @@ const RegisterForm = () => {
   } = useForm<UserData>({
     resolver: zodResolver(userSchema)
   });
+
   const { registerSubmit, showModal, setModal } = useAuth();
+  const [isBuyer, setIsBuyer] = useState(false);
+
+  const handleCompradorClick = () => {
+    setIsBuyer(false);
+  };
+
+  const handleAnuncianteClick = () => {
+    setIsBuyer(true);
+  };
+
+  const onSubmit = (data: UserData) => {
+    const userData = {
+      ...data,
+      buyer: isBuyer
+    };
+    registerSubmit(userData);
+  };
 
   return (
     <>
@@ -24,7 +43,7 @@ const RegisterForm = () => {
         </div>
         <form
           className="w-full h-full flex flex-col justify-center gap-4"
-          onSubmit={handleSubmit(registerSubmit)}>
+          onSubmit={handleSubmit(onSubmit)}>
           <div>
             <label htmlFor="name" className="user-form-label">
               Nome
@@ -168,8 +187,18 @@ const RegisterForm = () => {
           <div className="w-full flex flex-col gap-4">
             <p>Tipo de Conta</p>
             <div className="w-full flex justify-between">
-              <button type="button" className="big-brand-1">Comprador</button>
-              <button type="button" className="border-[1.5px] border-solid rounded text-whiteFixed py-[12px] px-[28px] bg-grey-3">
+              <button
+                type="button"
+                className={`border-[1.5px] border-solid rounded text-whiteFixed py-[12px] px-[28px] bg-grey-3 ${isBuyer ? "selected" : "big-brand-1"}`}
+                onClick={handleCompradorClick}>
+                Comprador
+              </button>
+              <button
+                type="button"
+                className={`border-[1.5px] border-solid rounded text-whiteFixed py-[12px] px-[28px] bg-grey-3 ${
+                  isBuyer ? "big-brand-1" : "selected"
+                }`}
+                onClick={handleAnuncianteClick}>
                 Anunciante
               </button>
             </div>
