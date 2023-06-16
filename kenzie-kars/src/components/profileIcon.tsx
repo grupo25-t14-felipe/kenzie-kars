@@ -1,4 +1,4 @@
-const Profile = ({ name }: any) => {
+const ProfileIcon = ({ name }: any) => {
   return (
     <div className="flex items-center gap-4 font-semibold">
       <span className="bg-brand-1 w-8 h-8 rounded-full text-grey-10 text-center relative">
@@ -9,4 +9,4 @@ const Profile = ({ name }: any) => {
   );
 };
 
-export default Profile;
+export default ProfileIcon;
