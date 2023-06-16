@@ -1,9 +1,8 @@
 import { UserData, userSchema } from "@/schemas/user.schema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRegister } from "@/contexts/registerContext";
+import { useAuth } from "@/contexts/authContext";
 import Modal from "./modal";
-import { useState } from "react";
 
 const RegisterForm = () => {
   const {
@@ -13,10 +12,10 @@ const RegisterForm = () => {
   } = useForm<UserData>({
     resolver: zodResolver(userSchema)
   });
-  const { register: registerUser, showModal, setModal } = useRegister();
+  const { register: registerUser, showModal, setModal } = useAuth();
   const onFormSubmit = (formData: UserData) => {
-    registerUser(formData);
     console.log(formData);
+    registerUser(formData);
   };
   return (
     <>
