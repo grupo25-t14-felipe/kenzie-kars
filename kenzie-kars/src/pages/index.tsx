@@ -11,14 +11,19 @@ import RegisterAnnouncement, { getBrands } from "@/components/registerAnnounceme
 import { GetServerSideProps } from "next";
 import api from "@/services/api";
 import { iAllAnnouncements } from "@/schemas/announcement.schema";
+import nookies from "nookies";
+import { useAuth } from "@/contexts/authContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Home({ announcements }: any) {
+export default function Home({ announcements, token }: any) {
   const [windowWidth, setWindowWidth] = useState<number>(0);
   const [openFilter, setOpenFilter] = useState(false);
   const [createAd, setCreateAd] = useState(false)
   const [brands, setBrands] = useState<string[]>()
+  const { setToken } = useAuth();
+
+  setToken(token)
 
   useEffect(() => {
     setWindowWidth(window.innerWidth);
@@ -30,7 +35,7 @@ export default function Home({ announcements }: any) {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
+  
   return (
     <>
       {createAd && <RegisterAnnouncement setCreateAd={setCreateAd} brands={brands} />}
@@ -111,7 +116,9 @@ export default function Home({ announcements }: any) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const response = await api.get<iAllAnnouncements>(`/announcements`);
+  const cookies = nookies.get(context);
+  
   return {
-    props: { announcements: response.data }
+    props: { announcements: response.data, token: cookies["projetofinal.token"] || null }
   };
 };

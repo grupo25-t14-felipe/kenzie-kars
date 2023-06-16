@@ -1,8 +1,7 @@
 import { loginData } from "@/schemas/user.schema";
 import api from "@/services/api";
 import { useRouter } from "next/router";
-import { setCookie } from "nookies";
-import jwt_decode from "jwt-decode";
+import { parseCookies, setCookie } from "nookies";
 import { ReactNode, createContext, useContext, useState } from "react";
 import { UserData } from "@/schemas/user.schema";
 
@@ -15,13 +14,17 @@ interface authProviderData {
   registerSubmit: (userData: UserData) => void;
   showModal: boolean;
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
+  router: any;
+  token: any;
+  setToken: any;
 }
 const AuthContext = createContext<authProviderData>({} as authProviderData);
 
 export const AuthProvider = ({ children }: loginProps) => {
   const router = useRouter();
   const [showModal, setModal] = useState(false);
-
+  const [token, setToken] = useState(parseCookies()['projetofinal.token']);
+ 
   const registerSubmit = (userData: UserData) => {
     console.log(userData);
     api
@@ -42,30 +45,18 @@ export const AuthProvider = ({ children }: loginProps) => {
           maxAge: 60 * 30,
           path: "/"
         });
-
         return response.data.token;
       })
       .then((response) => {
         router.push("/");
-        // const decoded: any = jwt_decode(response);
-        // console.log(decoded.buyer);
-
-        // if (decoded === false) {
-        //   router.push("/admin");
-        // }
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
   return (
-    <AuthContext.Provider
-      value={{
-        login,
-        registerSubmit,
-        showModal,
-        setModal
-      }}>
+    <AuthContext.Provider value={{ login, registerSubmit, showModal, setModal, router, token, setToken }}>
       {children}
     </AuthContext.Provider>
   );
