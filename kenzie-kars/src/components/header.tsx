@@ -4,13 +4,15 @@ import Link from "next/link";
 import { BiMenu } from "react-icons/bi";
 import { GrFormClose } from "react-icons/gr";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 const Header = () => {
   const [menu, setMenu] = useState(false);
   const [windowWidth, setWindowWidth] = useState<number>(0);
-  
+  const router = useRouter();
+
   useEffect(() => {
-    setWindowWidth(window.innerWidth)
+    setWindowWidth(window.innerWidth);
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
     };
@@ -27,7 +29,16 @@ const Header = () => {
           windowWidth < 768 && menu ? "flex-col" : "flex-row items-center"
         } justify-between  px-6 mx-auto`}>
         <div className="py-6">
-          <Image className="" width={153} height={27} src={logo} alt="logo motors shop" />
+          <Image
+            className=" cursor-pointer"
+            width={153}
+            height={27}
+            src={logo}
+            alt="logo motors shop"
+            onClick={() => {
+              router.push(`/`);
+            }}
+          />
         </div>
 
         {windowWidth < 768 ? (
