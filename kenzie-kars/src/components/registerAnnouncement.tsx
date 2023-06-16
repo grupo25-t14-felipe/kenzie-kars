@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
+import api from "@/services/api";
 
 interface iModel {
   id: string
@@ -72,30 +73,24 @@ const RegisterAnnouncement = ({ setCreateAd, brands }: iRegisterAnnouncement) =>
     } ])
   }
   
-  const createAd = async ({ images, ...data }: any) => {    
+  const createAd = async ({ images, ...data }: any) => {
     data['year'] = year;
     data['mileage'] = +data.mileage
     data['fuel'] = +fuel;
     data['price_table_fipe'] = fipe;
     
-    return await axios.post( 'http://localhost:3001/announcements', data, {
-      headers: {
-        Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6ImxlbyIsImJ1eWVyIjpmYWxzZSwiaWF0IjoxNjg2OTQ2Nzc1LCJleHAiOjE2ODY5NTAzNzUsInN1YiI6Ijg2OGUzMDA3LTBkZGUtNGMzZC1iNTFiLWZmNjU1ZjNjYWNmNSJ9.7quBZ_LHV9Fx4JuFxuSqCWsw_UjsFjRRsH92Hrc4Cec"
-      }
-    }).then( async (res: any) => {
+    return await api.post( '/announcements', data ).then( async (res: any) => {
+      console.log(res);
+      
       if( images ){
         await images.map( async (image: typeof CreateImageSchema) => {
-          return await axios.post( `http://localhost:3001/announcements/${res.data.id}/image`, image, {
-            headers: {
-              Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6ImxlbyIsImJ1eWVyIjpmYWxzZSwiaWF0IjoxNjg2OTQ2Nzc1LCJleHAiOjE2ODY5NTAzNzUsInN1YiI6Ijg2OGUzMDA3LTBkZGUtNGMzZC1iNTFiLWZmNjU1ZjNjYWNmNSJ9.7quBZ_LHV9Fx4JuFxuSqCWsw_UjsFjRRsH92Hrc4Cec"
-            }
-          }).then( resImage => resImage ).catch( err => {
+          return await api.post( `/announcements/${res.data.id}/image`, image ).then( resImage => resImage ).catch( err => {
             console.error(err);
           })
         })
-
-        reset();
       }
+
+      reset();
     }).catch( err => { console.error(err) })
   }
 

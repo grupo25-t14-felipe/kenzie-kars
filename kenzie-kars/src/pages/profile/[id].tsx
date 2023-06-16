@@ -8,6 +8,8 @@ import { iUserAnnouncements } from "@/schemas/announcement.schema";
 import { useAuth } from "@/contexts/authContext";
 const inter = Inter({ subsets: ["latin"] });
 import jwt_decode from "jwt-decode";
+import { useState } from "react";
+import RegisterAnnouncement, { getBrands } from "@/components/registerAnnouncement";
 
 interface ProfileProps {
   userAnnouncements: iUserAnnouncements;
@@ -15,9 +17,18 @@ interface ProfileProps {
 
 export default function Profile({ userAnnouncements }: ProfileProps) {
   const { router, token } = useAuth();
+  const [createAd, setCreateAd] = useState(false)
+  const [brands, setBrands] = useState<string[]>()
+  
+  const requestBrands = async () => {
+    const brands = await getBrands()
+    setBrands(brands)
+    setCreateAd( true )
+  }
  
   return (
     <>
+      {createAd && <RegisterAnnouncement setCreateAd={setCreateAd} brands={brands} />}
       <Header />
       <main
         className={`flex min-h-screen relative ${inter.className} gap-20 pt-[75px] bg-grey-8 body-1-400 z-10`}>
@@ -35,7 +46,7 @@ export default function Profile({ userAnnouncements }: ProfileProps) {
             </div>
             <p className="text-grey-2">{userAnnouncements.description}</p>
             {token && jwt_decode<any>(token).sub == userAnnouncements.id ? (
-              <button className="medium-outline-brand-1 max-w-max">Criar anuncio</button>
+              <button className="medium-outline-brand-1 max-w-max" onClick={() => {requestBrands()}}>Criar anuncio</button>
             ) : null}
           </div>
           <h3 className="heading-5-600 text-left w-full pl-[8%]">Anúncios</h3>

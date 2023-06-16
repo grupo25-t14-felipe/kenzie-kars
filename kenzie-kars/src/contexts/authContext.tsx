@@ -45,6 +45,9 @@ export const AuthProvider = ({ children }: loginProps) => {
           maxAge: 60 * 30,
           path: "/"
         });
+
+        api.defaults.headers.common["Authorization"] = `Bearer ${response.data.token}`;
+
         return response.data.token;
       })
       .then((response) => {
