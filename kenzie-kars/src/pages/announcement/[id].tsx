@@ -2,27 +2,20 @@ import Footer from "@/components/footer";
 import Header from "@/components/header";
 import { Inter } from "next/font/google";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import carIntro from "../assets/carIntro.png";
+import carIntro from "../../assets/carIntro.png";
 import ProfileIcon from "@/components/profileIcon";
-
+import { GetServerSideProps } from "next";
+import api from "@/services/api";
+import { iAnnouncement } from "@/schemas/announcement.schema";
+import { useRouter } from "next/router";
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Announcement() {
-  const [windowWidth, setWindowWidth] = useState<number>(0);
-  const [openFilter, setOpenFilter] = useState(false);
+interface ProfileProps {
+  announcement: iAnnouncement;
+}
 
-  useEffect(() => {
-    setWindowWidth(window.innerWidth);
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
+export default function Announcement({ announcement }: ProfileProps) {
+  const router = useRouter();
   return (
     <>
       <Header />
@@ -45,24 +38,24 @@ export default function Announcement() {
               <div className="p-4 flex flex-col gap-8 relative bottom-12 md:bottom-[180px] w-full md:max-w-[685px] md:mx-auto">
                 <div className="flex flex-col gap-8 font-semibold bg-whiteFixed rounded p-8">
                   <h3 className="heading-6-600">
-                    Mercedes Benz A 200 CGI ADVANCE SEDAN Mercedes Benz A 200
+                    {`${announcement?.brand} - ${announcement?.model}`}
                   </h3>
                   <div>
-                    <span className="bg-brand-4 text-brand-2 mr-4 p-2 rounded">0 KM</span>
-                    <span className="bg-brand-4 text-brand-2 p-2 rounded">2019</span>
+                    <span className="bg-brand-4 text-brand-2 mr-4 p-2 rounded">{`${announcement?.mileage}KM`}</span>
+                    <span className="bg-brand-4 text-brand-2 p-2 rounded">
+                      {announcement?.year}
+                    </span>
                   </div>
-                  <p>R$ 00.0000,00</p>
+                  <p>{`R$ ${new Intl.NumberFormat("pt-BR", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                  }).format(Number(announcement?.price))}`}</p>
                   <button className="small-brand-1 max-w-max">Comprar</button>
                 </div>
 
                 <div className="flex flex-col gap-8 bg-whiteFixed rounded p-8 ">
                   <h3 className="heading-6-600 ">Descrição</h3>
-                  <p className="text-grey-2">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                    Ipsum has been the industry's standard dummy text ever since the 1500s, when an
-                    unknown printer took a galley of type and scrambled it to make a type specimen
-                    book.
-                  </p>
+                  <p className="text-grey-2">{announcement?.description}</p>
                 </div>
               </div>
             </div>
@@ -103,16 +96,21 @@ export default function Announcement() {
                   <div className="flex flex-col items-center gap-4 ">
                     <span className="bg-brand-1 w-[77px] h-[77px] rounded-full text-grey-10 text-center">
                       <p className="relative top-4 heading-3-500">
-                        {"Name Name".split(" ").map((letter: string) => letter.charAt(0))}
+                        {announcement.user.name
+                          .split(" ")
+                          .map((letter: string) => letter.charAt(0))}
                       </p>
                     </span>
-                    <h3 className="heading-6-600 ">{"Name Name"}</h3>
+                    <h3 className="heading-6-600 ">{announcement.user.name}</h3>
                   </div>
-                  <p className="text-grey-2">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                    Ipsum has been the industry's
-                  </p>
-                  <button className="medium-grey-1 w-10/12">Ver todos anuncios</button>
+                  <p className="text-grey-2">{announcement.user.description}</p>
+                  <button
+                    className="medium-grey-1 w-10/12"
+                    onClick={() => {
+                      router.push(`/profile/${announcement.user.id}`);
+                    }}>
+                    Ver todos anuncios
+                  </button>
                 </div>
               </div>
             </div>
@@ -175,3 +173,11 @@ export default function Announcement() {
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const announcementId = context.params?.id;
+  const response = await api.get<iAnnouncement>(`/announcements/${announcementId}`);
+  return {
+    props: { announcement: response.data }
+  };
+};
