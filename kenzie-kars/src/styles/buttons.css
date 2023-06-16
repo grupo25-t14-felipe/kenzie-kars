@@ -1,6 +1,294 @@
 @tailwind components;
 
 @layer components {
+    .big-grey-1 {
+        @apply bg-grey-0 border-[1.5px] border-solid border-grey-0 rounded text-whiteFixed py-[12px] px-[28px];
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+    }
+    
+    .big-grey-1:hover {
+        @apply bg-grey-1 border-[1.5px] border-solid border-grey-1;
+    }
+
+    .medium-grey-1 {
+        @apply  bg-grey-0 border-[1.5px] border-solid border-grey-0 rounded text-whiteFixed py-[12px] px-[20px] ;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+    }
+    
+    .medium-grey-1:hover {
+        @apply bg-grey-1 border-[1.5px] border-solid border-grey-1;
+    }
+
+    .big-negative {
+        @apply bg-grey-6 border-[1.5px] border-solid border-grey-6 rounded text-grey-2 py-[12px] px-[28px];
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+    }
+
+    .big-negative:hover {
+        @apply bg-grey-5 border-[1.5px] border-solid border-grey-5;
+    }
+    
+    .medium-negative {
+        @apply bg-grey-6 border-[1.5px] border-solid border-grey-6 rounded text-grey-2 py-[12px] px-[20px];
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+    }
+    
+    .medium-negative:hover {
+        @apply bg-grey-5 border-[1.5px] border-solid border-grey-5;
+    }
+    
+    :disabled {
+        @apply bg-grey-5 border-[1.5px] border-solid border-grey-5 rounded text-whiteFixed;
+    }
+
+    .big-brand-1 {
+        @apply bg-brand-1 border-[1.5px] border-solid border-brand-1 rounded text-whiteFixed py-[12px] px-[28px];
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+    }
+    
+    .big-brand-1:hover {
+        @apply bg-brand-2 border-[1.5px] border-solid border-brand-2;
+    }
+
+    .big-brand-1:disabled {
+        @apply bg-brand-3 border-[1.5px] border-solid border-brand-3 rounded text-brand-4;
+    }
+
+    .medium-brand-1 {
+        @apply bg-brand-1 border-[1.5px] border-solid border-brand-1 rounded text-whiteFixed py-[12px] px-[20px];
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+    }
+    
+    .medium-brand-1:hover {
+        @apply bg-brand-2 border-[1.5px] border-solid border-brand-2;
+    }
+
+    .medium-brand-1:disabled {
+        @apply bg-brand-3 border-[1.5px] border-solid border-brand-3 rounded text-brand-4;
+    }
+    
+    .small-brand-1 {
+        @apply bg-brand-1 border-[1.5px] border-solid border-brand-1 rounded text-whiteFixed py-[8px] px-[20px];
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+    }
+    
+    .small-brand-1:hover {
+        @apply bg-brand-2 border-[1.5px] border-solid border-brand-2;
+    }
+
+    .small-brand-1:disabled {
+        @apply bg-brand-3 border-[1.5px] border-solid border-brand-3 rounded text-brand-4;
+    }
+
+    .big-brand-opacity {
+        @apply bg-brand-4 border-[1.5px] border-solid border-brand-4 rounded text-brand-1 py-[12px] px-[28px];
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+    }
+    
+    .medium-brand-opacity {
+        @apply bg-brand-4 border-[1.5px] border-solid border-brand-4 rounded text-brand-1 py-[12px] px-[20px];
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .big-ligth {
+        @apply bg-grey-10 border-[1.5px] border-solid border-grey-10 rounded text-grey-1 py-[12px] px-[28px];
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+    }
+
+    .medium-ligth {
+        @apply bg-grey-10 border-[1.5px] border-solid border-grey-10 rounded text-grey-1 py-[12px] px-[20px];
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .big-outline-ligth {
+        @apply border-[1.5px] border-solid border-grey-10 rounded text-grey-10 py-[12px] px-[28px];
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+    }
+    
+    .big-outline-ligth:hover {
+        @apply bg-grey-10 border-[1.5px] border-solid border-grey-10 text-grey-1;
+    }
+
+    .medium-outline-ligth {
+        @apply border-[1.5px] border-solid border-grey-10 rounded text-grey-10 py-[12px] px-[20px];
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+    }
+    
+    .medium-outline-ligth:hover {
+        @apply bg-grey-10 border-[1.5px] border-solid border-grey-10 text-grey-1;
+    }
+
+    .big-outline-ligth {
+        @apply border-[1.5px] border-solid border-grey-0 rounded text-grey-0 py-[12px] px-[28px];
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+    }
+    
+    .medium-outline-ligth {
+        @apply border-[1.5px] border-solid border-grey-0 rounded text-grey-0 py-[12px] px-[20px];
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .big-45 {
+        @apply bg-grey-1 border-[1.5px] border-solid border-grey-1 rounded text-grey-10 py-[12px] px-[28px];
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+    }
+    
+    .medium-45 {
+        @apply bg-grey-1 border-[1.5px] border-solid border-grey-1 rounded text-grey-10 py-[12px] px-[20px];
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .big-outline-2 {
+        @apply border-[1.5px] border-solid border-grey-4 rounded text-grey-0 py-[12px] px-[28px];
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+    }
+
+    .big-outline-2:hover {
+        @apply bg-grey-1 border-[1.5px] border-solid border-grey-1 rounded text-grey-10 py-[12px] px-[28px];
+    }
+
+    .medium-outline-2 {
+        @apply border-[1.5px] border-solid border-grey-4 rounded text-grey-0 py-[12px] px-[20px];
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .medium-outline-2:hover {
+        @apply bg-grey-1 border-[1.5px] border-solid border-grey-1 rounded text-grey-10;
+    }
+
+    .big-outline-brand-1 {
+        @apply border-[1.5px] border-solid border-brand-1 rounded text-brand-1 py-[12px] px-[28px];
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+    }
+
+    .big-outline-brand-1:hover {
+        @apply bg-brand-4 border-[1.5px] border-solid border-brand-1 rounded text-brand-1;
+    }
+
+    .medium-outline-brand-1 {
+        @apply border-[1.5px] border-solid border-brand-1 rounded text-brand-1 py-[12px] px-[20px];
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .medium-outline-brand-1:hover {
+        @apply bg-brand-4 border-[1.5px] border-solid border-brand-1 rounded text-brand-1;
+    }
+
+    .big-link {
+        @apply rounded text-grey-0 py-[12px] px-[28px];
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+    }
+
+    .big-link:hover {
+        @apply bg-grey-8 rounded text-grey-0;
+    }
+
+    .medium-link {
+        @apply rounded text-grey-0 py-[12px] px-[20px];
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .medium-link:hover {
+        @apply bg-grey-8 rounded text-grey-0;
+    }
+
+    .big-alert {
+        @apply bg-alert-3 border-[1.5px] border-solid border-alert-3 rounded text-alert-1 py-[12px] px-[28px];
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+    }
+    
+    .big-alert:hover {
+        @apply bg-alert-2 border-[1.5px] border-solid border-alert-2;
+    }
+    
+    .medium-alert {
+        @apply bg-alert-3 border-[1.5px] border-solid border-alert-3 rounded text-alert-1 py-[12px] px-[20px];
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+    }
+    
+    .medium-alert:hover {
+        @apply bg-alert-2 border-[1.5px] border-solid border-alert-2;
+    }
+
+    .big-sucess {
+        @apply bg-sucess-3 border-[1.5px] border-solid border-sucess-3 rounded text-sucess-1 py-[12px] px-[28px];
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+    }
+    
+    .big-sucess:hover {
+        @apply bg-sucess-2 border-[1.5px] border-solid border-sucess-2;
+    }
+
+    .big-sucess {
+        @apply bg-sucess-3 border-[1.5px] border-solid border-sucess-3 rounded text-sucess-1 py-[12px] px-[28px];
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+    }
+    
+    .big-sucess:hover {
+        @apply bg-sucess-2 border-[1.5px] border-solid border-sucess-2;
+    }
+    .big-grey-1 {
+        @apply bg-whiteFixed border-[1.5px] border-solid border-grey-7 rounded text-grey-0 py-[12px] px-[28px];
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+    }
+
+
   .big-grey-1 {
     @apply bg-grey-0 border-[1.5px] border-solid border-grey-0 rounded text-whiteFixed py-[12px] px-[28px];
     font-style: normal;

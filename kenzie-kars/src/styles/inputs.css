@@ -12,4 +12,10 @@
     input.input-text:focus {
         @apply bg-grey-9 border-[1.5px] border-solid border-brand-2 text-grey-1;
     }
+    .input-label {
+        @apply text-grey-1;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px
+    }
 }
