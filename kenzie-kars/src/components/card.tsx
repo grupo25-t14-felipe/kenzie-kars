@@ -1,4 +1,3 @@
-import Image from "next/image";
 import car from "../assets/car.png";
 import Profile from "./profileIcon";
 import { ReactNode } from "react";
@@ -22,7 +21,7 @@ const Card = ({ children, announcement, userAnnouncement }: any) => {
     }}>
 
       <div>
-        <Image className="w-full h-full" src={car} alt="carro" />
+        <img className="w-full h-full" src={announcement?.cover_image} alt="carro" />
       </div>
       <h3 className="w-full whitespace-nowrap font-bold truncate">
         {`${announcement?.brand} - ${announcement?.model}`}
