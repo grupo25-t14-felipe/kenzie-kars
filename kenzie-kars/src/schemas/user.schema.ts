@@ -1,30 +1,21 @@
 import { z } from "zod";
 
-
-export const loginSchema = z
+export const userSchema = z
   .object({
-    email: z.string().email("deve ser um email valido").nonempty("email é obrigatorio"),
-    password: z.string().nonempty("senha é obrigatoria")
+    name: z.string().nonempty("Campo obrigatório!"),
+    cpf: z.string().nonempty("Campo obrigatório!"),
+    email: z.string().nonempty("Campo obrigatório!"),
+    password: z.string().nonempty("Campo obrigatório!"),
+    confirm: z.string().nonempty("Campo obrigatório!"),
+    telephone: z.string().nonempty("Campo obrigatório!"),
+    date_of_birth: z.string().nonempty("Campo obrigatório!"),
+    description: z.string(),
+    buyer: z.boolean()
   })
-  .refine((data) => data.email === data.password, {
-    message: "LULULALALA",
-    path: ["confirmData"]
+  .refine((data) => data.password === data.confirm, {
+    message: "As senhas não são iguais!",
+    path: ["confirm"]
   });
-=======
-export const userSchema = z.object({
-  name: z.string().nonempty("Campo obrigatório!"),
-  cpf: z.string().nonempty("Campo obrigatório!"),
-  email: z.string().nonempty("Campo obrigatório!"),
-  password: z.string().nonempty("Campo obrigatório!"),
-  confirm: z.string().nonempty("Campo obrigatório!"),
-  telephone: z.string().nonempty("Campo obrigatório!"),
-  date_of_birth: z.string().nonempty("Campo obrigatório!"),
-  description: z.string(),
-  buyer: z.boolean()
-}).refine((data) => data.password === data.confirm, {
-  message: "As senhas não são iguais!",
-  path: ["confirm"],
-});
 
 export type UserData = z.infer<typeof userSchema>;
 
