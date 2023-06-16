@@ -5,13 +5,17 @@ import { Inter } from "next/font/google";
 import { GetServerSideProps } from "next";
 import api from "@/services/api";
 import { iUserAnnouncements } from "@/schemas/announcement.schema";
+import { useAuth } from "@/contexts/authContext";
 const inter = Inter({ subsets: ["latin"] });
+import jwt_decode from "jwt-decode";
 
 interface ProfileProps {
   userAnnouncements: iUserAnnouncements;
 }
 
 export default function Profile({ userAnnouncements }: ProfileProps) {
+  const { router, token } = useAuth();
+ 
   return (
     <>
       <Header />
@@ -30,6 +34,9 @@ export default function Profile({ userAnnouncements }: ProfileProps) {
               <p className="bg-brand-4 text-brand-2 mr-4 p-2 rounded font-semibold">anunciante</p>
             </div>
             <p className="text-grey-2">{userAnnouncements.description}</p>
+            {token && jwt_decode<any>(token).sub == userAnnouncements.id ? (
+              <button className="medium-outline-brand-1 max-w-max">Criar anuncio</button>
+            ) : null}
           </div>
           <h3 className="heading-5-600 text-left w-full pl-[8%]">Anúncios</h3>
           <ul className="w-full md:w-[80%] flex overflow-auto md:flex-wrap relative h-full">
@@ -38,12 +45,19 @@ export default function Profile({ userAnnouncements }: ProfileProps) {
                 key={announcement.id}
                 announcement={announcement}
                 userAnnouncement={userAnnouncements}>
-                <span
-                  className={`absolute top-10 left-6 text-grey-10 ${
-                    announcement.published ? "bg-brand-1" : "bg-grey-4"
-                  } py-[2px] px-2 body-2-500`}>
-                  {announcement.published ? "Ativo" : "Inativo"}
-                </span>
+                {token && jwt_decode<any>(token).sub == userAnnouncements.id ? (
+                  <div className="flex gap-4">
+                    <button className="small-outline-1 max-w-max">Editar</button>
+                    <button className="small-outline-1 max-w-max truncate">Ver detalhes</button>
+                  </div>
+                ) : (
+                  <span
+                    className={`absolute top-10 left-6 text-grey-10 ${
+                      announcement.published ? "bg-brand-1" : "bg-grey-4"
+                    } py-[2px] px-2 body-2-500`}>
+                    {announcement.published ? "Ativo" : "Inativo"}
+                  </span>
+                )}
               </Card>
             ))}
           </ul>
