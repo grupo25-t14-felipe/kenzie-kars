@@ -28,13 +28,14 @@ export const AuthProvider = ({ children }: loginProps) => {
 
         return response.data.token;
       })
-      .then((response) => {
-        const decoded: any = jwt_decode(response);
-        console.log(decoded.buyer);
+      .then(() => {
+        router.push("/");
+        // const decoded: any = jwt_decode(response);
+        // console.log(decoded.buyer);
 
-        if(decoded === false) {
-          router.push("/admin")
-        }
+        // if(decoded === false) {
+        //   router.push("/admin")
+        // }
       })
       .catch((err) => {
         console.log(err);
