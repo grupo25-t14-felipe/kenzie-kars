@@ -59,7 +59,13 @@ export const AuthProvider = ({ children }: loginProps) => {
       });
   };
   return (
-    <AuthContext.Provider value={{ login, registerSubmit, showModal, setModal }}>
+    <AuthContext.Provider
+      value={{
+        login,
+        registerSubmit,
+        showModal,
+        setModal
+      }}>
       {children}
     </AuthContext.Provider>
   );
