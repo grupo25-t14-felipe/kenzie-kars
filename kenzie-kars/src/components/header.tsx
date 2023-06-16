@@ -4,12 +4,14 @@ import Link from "next/link";
 import { BiMenu } from "react-icons/bi";
 import { GrFormClose } from "react-icons/gr";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useAuth } from "@/contexts/authContext";
+import ProfileIcon from "./profileIcon";
+import jwt_decode from "jwt-decode";
 
 const Header = () => {
+  const { router, token } = useAuth();
   const [menu, setMenu] = useState(false);
   const [windowWidth, setWindowWidth] = useState<number>(0);
-  const router = useRouter();
 
   useEffect(() => {
     setWindowWidth(window.innerWidth);
@@ -20,6 +22,9 @@ const Header = () => {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
+  }, []);
+
+  useEffect(() => {
   }, []);
 
   return (
@@ -40,8 +45,8 @@ const Header = () => {
             }}
           />
         </div>
-
-        {windowWidth < 768 ? (
+        
+        { windowWidth < 768 ? (
           menu ? (
             <>
               <GrFormClose
@@ -59,6 +64,7 @@ const Header = () => {
                   Cadastrar
                 </Link>
               </nav>
+              
             </>
           ) : (
             <BiMenu
@@ -70,6 +76,8 @@ const Header = () => {
           )
         ) : (
           <nav className=" w-80 flex justify-around items-center font-semibold h-20 border-l border-grey-4">
+            {token ? <ProfileIcon name={token && jwt_decode<any>(token).userName}/> :
+            <>
             <Link className="whitespace-nowrap" href={"/login"}>
               Fazer login
             </Link>
@@ -77,6 +85,8 @@ const Header = () => {
             <Link className="big-outline-2" href={"/register"}>
               Cadastrar
             </Link>
+            </>
+            }
           </nav>
         )}
       </div>
