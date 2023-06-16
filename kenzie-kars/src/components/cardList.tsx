@@ -1,6 +1,6 @@
 import Image from "next/image";
 import car from "../assets/car.png";
-import Profile from "../components/profile"
+import Profile from "../components/profile";
 
 const CardList = () => {
   return (
@@ -15,8 +15,8 @@ const CardList = () => {
         <p className="w-full line-clamp-2">
           Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem...
         </p>
-        
-        <Profile name="Samuel Leão"/>
+
+        <Profile name="Samuel Leão" />
         <div className=" flex justify-between font-bold">
           <div>
             <span className="bg-brand-4 text-brand-2 mr-4 p-2 rounded">0 KM</span>
@@ -35,8 +35,8 @@ const CardList = () => {
         <p className="w-full line-clamp-2">
           Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem...
         </p>
-        
-        <Profile name="Samuel Leão"/>
+
+        <Profile name="Samuel Leão" />
         <div className=" flex justify-between font-bold">
           <div>
             <span className="bg-brand-4 text-brand-2 mr-4 p-2 rounded">0 KM</span>
@@ -55,8 +55,8 @@ const CardList = () => {
         <p className="w-full line-clamp-2">
           Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem...
         </p>
-        
-        <Profile name="Samuel Leão"/>
+
+        <Profile name="Samuel Leão" />
         <div className=" flex justify-between font-bold">
           <div>
             <span className="bg-brand-4 text-brand-2 mr-4 p-2 rounded">0 KM</span>
@@ -75,8 +75,8 @@ const CardList = () => {
         <p className="w-full line-clamp-2">
           Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem...
         </p>
-        
-        <Profile name="Samuel Leão"/>
+
+        <Profile name="Samuel Leão" />
         <div className=" flex justify-between font-bold">
           <div>
             <span className="bg-brand-4 text-brand-2 mr-4 p-2 rounded">0 KM</span>
@@ -85,9 +85,11 @@ const CardList = () => {
           <p>R$ 00.0000,00</p>
         </div>
       </li>
-      
+
       <div className="w-full font-semibold md:flex gap-8 justify-center items-center hidden">
-        <p className="text-grey-3"><span className="text-grey-2">1</span> de 2</p>
+        <p className="text-grey-3">
+          <span className="text-grey-2">1</span> de 2
+        </p>
         <p className="text-brand-1 cursor-pointer">{"Seguinte >"}</p>
       </div>
     </ul>

@@ -2,7 +2,7 @@
 
 @layer components {
     input.input-text {
-        @apply p-[8px] border-[1.5px] border-solid border-grey-7 rounded text-grey-3 font-normal not-italic text-base;
+        @apply p-[8px] border-[1.5px] border-solid border-grey-7 rounded text-grey-0 font-normal not-italic text-base;
     }
 
     input.input-text + span {

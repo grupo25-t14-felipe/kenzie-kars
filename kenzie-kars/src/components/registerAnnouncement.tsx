@@ -24,11 +24,11 @@ const CreateImageSchema = z.object({
 })
 
 const CreateAnnouncementSchema = z.object({
-  brand: z.string({ required_error: 'Este campo é obrigatório' }).max(1, 'muito pequeno '),
+  brand: z.string({ required_error: 'Este campo é obrigatório' }),
   model: z.string({ required_error: 'Este campo é obrigatório' }),
   year: z.string({ required_error: 'Este campo é obrigatório' }),
-  fuel: z.string({ required_error: 'Este campo é obrigatório' }).transform( data => +data ),
-  mileage: z.string({ required_error: 'Este campo é obrigatório' }).transform( data => +data ),
+  fuel: z.string({ required_error: 'Este campo é obrigatório' }),
+  mileage: z.string({ required_error: 'Este campo é obrigatório' }),
   color: z.string({ required_error: 'Este campo é obrigatório' }),
   price_table_fipe: z.string({ required_error: 'Este campo é obrigatório' }), 
   price: z.string({ required_error: 'Este campo é obrigatório' }),
@@ -47,11 +47,11 @@ export const getModels = async ( brand: string ) => {
 }
 
 const RegisterAnnouncement = ({ setCreateAd, brands }: iRegisterAnnouncement) => {
-  const { register, handleSubmit, reset } = useForm({
+  const { register, handleSubmit, reset, formState:{ errors }, setValue } = useForm({
     mode: 'onSubmit',
     resolver: zodResolver( CreateAnnouncementSchema )
   })
-
+  
   const [formImages, setFormImages] = useState([
     { imageId: "image-1", title: "1º Imagem da galeria" },
     { imageId: "image-2", title: "2º Imagem da galeria" }
@@ -99,8 +99,12 @@ const RegisterAnnouncement = ({ setCreateAd, brands }: iRegisterAnnouncement) =>
     } ])
   } 
   
-  const createAd = async ( data: any ) => {
+  const createAd = async ( {images, ...data}: any ) => {
     console.log(data);
+
+    // const res = await axios.post( 'http://localhost:3000/announcements', data)
+    // console.log(res);
+
     // reset();
   }
 
@@ -139,7 +143,7 @@ const RegisterAnnouncement = ({ setCreateAd, brands }: iRegisterAnnouncement) =>
             className="input-text" 
             placeholder="bolt ev premier 203cv (elétrico)" 
             value={ searchModel }
-            {...register('model')} 
+            {...register('model', { value: searchModel })}
             onClick={async (event) => {
               event.preventDefault()
               const allModelsRequest = await getModels( searchBrand ).then( res => res ).catch( err => 'Deve escolher a marca primeiro')
@@ -159,12 +163,21 @@ const RegisterAnnouncement = ({ setCreateAd, brands }: iRegisterAnnouncement) =>
           <div className="flex flex-row gap-2.5 mb-4">
             <div className="w-1/2">
               <label htmlFor="year" className="input-label">Ano</label>
-              <input type="text" id="year" className="input-text w-full cursor-not-allowed" placeholder="2022" {...register('year')} value={year}  disabled required />
+              <input type="text" id="year" className="input-text w-full cursor-not-allowed" placeholder="2022" {...register('year', { value: year })} value={year} disabled required />
               <span></span>
             </div>
             <div className="w-1/2">
               <label htmlFor="fuel" className="input-label">Combustível</label>
-              <input type="text" id="fuel" className="input-text w-full cursor-not-allowed" placeholder="3" {...register('fuel')} value={fuel} disabled required />
+              <input 
+                type="text" 
+                id="fuel" 
+                className="input-text w-full cursor-not-allowed" 
+                placeholder="3" 
+                value={fuel} 
+                {...register('fuel', { value: fuel })}
+                disabled 
+                required 
+              />
               <span></span>
             </div>
           </div>
@@ -182,7 +195,7 @@ const RegisterAnnouncement = ({ setCreateAd, brands }: iRegisterAnnouncement) =>
                   let model: iModel
                   for( model of allModels ){
                     if( model.name == searchModel ){
-                      setYear( model.year )
+                      setYear( `${model.year}` )
                       setFuel( `${model.fuel}` )
                       setFipe( `${model.value}` )
                     }
@@ -202,7 +215,7 @@ const RegisterAnnouncement = ({ setCreateAd, brands }: iRegisterAnnouncement) =>
           <div className="flex flex-row gap-2.5">
             <div className="w-1/2">
               <label htmlFor="price_table_fipe" className="input-label">Preço tablela FIPE</label>
-              <input type="text" id="price_table_fipe" className="input-text w-full cursor-not-allowed" placeholder="282045" {...register('price_table_fipe')} value={fipe} disabled required />
+              <input type="text" id="price_table_fipe" className="input-text w-full cursor-not-allowed" value={fipe} placeholder="282045" {...register('price_table_fipe', { value: fipe })} disabled required />
               <span></span>
             </div>
             <div className="w-1/2">

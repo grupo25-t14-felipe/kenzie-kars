@@ -12,9 +12,6 @@ const Options = ({ options, filter, id, setState, setCloseOptions }: iOptions) =
     const DOMRect = document.getElementById( id )!.getBoundingClientRect();
     const width = `${DOMRect.width}px`
     const top = `${DOMRect.bottom}px`
-    console.log(options);
-    console.log(filter);
-    
     
     return(
         <div className={`w-[${width}] pt-[5px] pb-[10px] bg-grey-1 z-[1] top-[${top}] border-box rounded-b rounded-l`}>
