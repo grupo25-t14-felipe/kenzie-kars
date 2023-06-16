@@ -1,7 +1,7 @@
 import { UserData, userSchema } from "@/schemas/user.schema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAuth } from "@/contexts/registerContext";
+import { useRegister } from "@/contexts/registerContext";
 import Modal from "./modal";
 import { useState } from "react";
 
@@ -13,16 +13,15 @@ const RegisterForm = () => {
   } = useForm<UserData>({
     resolver: zodResolver(userSchema)
   });
-  const { register: registerUser } = useAuth();
+  const { register: registerUser, showModal, setModal } = useRegister();
   const onFormSubmit = (formData: UserData) => {
     registerUser(formData);
     console.log(formData);
   };
-  const [showModal, closeModal] = useState(false)
   return (
     <>
       <div className=" bg-whiteFixed px-[44px] py-[48px] w-[90%] max-w-[411px] h-[80%] max-h-[1,630px] my-[100px] rounded">
-        <Modal isVisible={showModal} onClose={() => closeModal(false)} />
+        <Modal isVisible={showModal} onClose={() => setModal(false)} />
         <div className="w-full flex flex-col gap-4 my-[10px]">
           <p className="text-4xl mt-1 font-semibold">Cadastro</p>
           <p>Informações pessoais</p>
@@ -208,7 +207,7 @@ const RegisterForm = () => {
             </div>
           </div>
           <div>
-            <button type="submit" className="big-brand-1 w-full" onClick={() => showModal}>
+            <button type="submit" className="big-brand-1 w-full">
               Finalizar Cadastro
             </button>
           </div>
