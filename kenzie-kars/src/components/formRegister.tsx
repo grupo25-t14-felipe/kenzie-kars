@@ -26,6 +26,7 @@ const RegisterForm = () => {
   };
 
   const onSubmit = (data: UserData) => {
+    console.log(data);
     const userData = {
       ...data,
       buyer: isBuyer
@@ -189,8 +190,10 @@ const RegisterForm = () => {
             <div className="w-full flex justify-between">
               <button
                 type="button"
-                className={`border-[1.5px] border-solid rounded text-whiteFixed py-[12px] px-[28px] bg-grey-3 ${isBuyer ? "selected" : "big-brand-1"}`}
-                onClick={handleCompradorClick}>
+                className={`border-[1.5px] border-solid rounded text-whiteFixed py-[12px] px-[28px] bg-grey-3 ${
+                  isBuyer ? "selected" : "big-brand-1"
+                }`}
+                onClick={() => setIsBuyer(false)}>
                 Comprador
               </button>
               <button
@@ -198,7 +201,7 @@ const RegisterForm = () => {
                 className={`border-[1.5px] border-solid rounded text-whiteFixed py-[12px] px-[28px] bg-grey-3 ${
                   isBuyer ? "big-brand-1" : "selected"
                 }`}
-                onClick={handleAnuncianteClick}>
+                onClick={() => setIsBuyer(true)}>
                 Anunciante
               </button>
             </div>
