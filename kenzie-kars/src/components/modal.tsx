@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 
-const Modal = ({ isVisible, onClose }) => {
+const Modal = ({ isVisible, onClose }: any) => {
   if (!isVisible) return null;
   return (
     <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center">
