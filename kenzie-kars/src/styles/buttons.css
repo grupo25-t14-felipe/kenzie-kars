@@ -580,4 +580,7 @@
   .big-sucess:hover {
     @apply bg-sucess-2 border-[1.5px] border-solid border-sucess-2;
   }
+  .selected {
+    @apply text-brand-1;
+  }
 }
