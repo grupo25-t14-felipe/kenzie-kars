@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useState } from "react";
+import { ReactNode, createContext, useEffect, useState } from "react";
 import api from "@/services/api";
 import { iAnnouncement } from "@/schemas/announcement.schema";
 
@@ -7,7 +7,7 @@ interface filterProps {
 }
 
 interface IFilterContext {
-  ListAnnouncements: () => void;
+  // ListAnnouncements: () => void;
   Filter: (brand: string, model: string, color: string, year: string, fuel: string) => void;
   FilterInput: (price: string, mileage: string) => void;
 }
@@ -18,7 +18,7 @@ export function FilterProvider({ children }: filterProps) {
   const [allAnnouncements, setAllAnnouncements] = useState<iAnnouncement[]>([]);
   const [filterList, setFilterList] = useState<iAnnouncement[]>([]);
 
-  const ListAnnouncements: any = () => {
+  useEffect(() => {
     api
       .get("/announcements")
       .then((response) => {
@@ -28,7 +28,7 @@ export function FilterProvider({ children }: filterProps) {
       .catch((err) => {
         console.log(err);
       });
-  };
+  }, []);
 
   function Filter(brand: string, model: string, color: string, year: string, fuel: string) {
     let filteredList = [...allAnnouncements];
@@ -81,8 +81,6 @@ export function FilterProvider({ children }: filterProps) {
   }
 
   return (
-    <FilterContext.Provider value={{ ListAnnouncements, Filter, FilterInput }}>
-      {children}
-    </FilterContext.Provider>
+    <FilterContext.Provider value={{ Filter, FilterInput }}>{children}</FilterContext.Provider>
   );
 }
