@@ -18,7 +18,7 @@ interface authProviderData {
   token: any;
   setToken: any;
 }
-const AuthContext = createContext<authProviderData>({} as authProviderData);
+export const AuthContext = createContext<authProviderData>({} as authProviderData);
 
 export const AuthProvider = ({ children }: loginProps) => {
   const router = useRouter();
@@ -26,7 +26,6 @@ export const AuthProvider = ({ children }: loginProps) => {
   const [token, setToken] = useState(parseCookies()['projetofinal.token']);
  
   const registerSubmit = (userData: UserData) => {
-    console.log(userData);
     api
       .post("/users", userData)
       .then(() => {
