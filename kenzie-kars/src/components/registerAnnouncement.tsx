@@ -158,7 +158,7 @@ const RegisterAnnouncement = ({ setCreateAd, brands }: iRegisterAnnouncement) =>
           <div className="flex flex-row gap-2.5 mb-4">
             <div className="w-1/2">
               <label htmlFor="year" className="input-label">Ano</label>
-              <input type="text" id="year" className="input-text w-full cursor-not-allowed" placeholder="2022" {...register('year', { value: year })} value={year} disabled required />
+                <input type="text" id="year" className="input-text w-full cursor-not-allowed" placeholder="2022" {...register('year', { value: year })} value={year} disabled required />
               <span></span>
             </div>
             <div className="w-1/2">

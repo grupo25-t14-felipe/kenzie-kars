@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { parseCookies, setCookie } from "nookies";
 import { ReactNode, createContext, useContext, useState } from "react";
 import { UserData } from "@/schemas/user.schema";
+import jwtDecode from "jwt-decode";
 
 interface loginProps {
   children: ReactNode;
@@ -39,6 +40,13 @@ export const AuthProvider = ({ children }: loginProps) => {
   const login = (loginData: loginData) => {
     api
       .post("/login", loginData)
+      .then( response => {
+        const { sub }: { sub: string } = jwtDecode(response.data.token)
+        
+        window.localStorage.setItem('@kenzie-kars-userId', sub)
+
+        return response
+      })
       .then((response) => {
         setCookie(null, "projetofinal.token", response.data.token, {
           maxAge: 60 * 30,
@@ -54,7 +62,7 @@ export const AuthProvider = ({ children }: loginProps) => {
       })
       .catch((err) => {
         console.log(err);
-      });
+      }); 
   };
 
   return (

@@ -14,7 +14,7 @@ const announcementSchema = z.object({
   cover_image: z.string()
 });
 
-const createAnnouncementSchema = announcementSchema.extend({
+export const createAnnouncementSchema = announcementSchema.extend({
   id: z.string(),
   createdAt: z.string()
 });

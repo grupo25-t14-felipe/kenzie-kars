@@ -7,7 +7,6 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { GrFormClose } from "react-icons/gr";
 import carIntro from "../assets/carIntro.png";
-import RegisterAnnouncement, { getBrands } from "@/components/registerAnnouncement";
 import { GetServerSideProps } from "next";
 import api from "@/services/api";
 import { iAllAnnouncements } from "@/schemas/announcement.schema";
@@ -20,7 +19,7 @@ export default function Home({ announcements, token }: any) {
   const [windowWidth, setWindowWidth] = useState<number>(0);
   const [openFilter, setOpenFilter] = useState(false);
   const { setToken } = useAuth();
-
+  
   setToken(token)
 
   useEffect(() => {
