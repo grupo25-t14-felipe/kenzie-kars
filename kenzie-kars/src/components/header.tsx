@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/authContext";
 import ProfileIcon from "./profileIcon";
 import jwt_decode from "jwt-decode";
+import { destroyCookie } from "nookies";
 
 const Header = () => {
   const { router, token } = useAuth();
@@ -24,8 +25,7 @@ const Header = () => {
     };
   }, []);
 
-  useEffect(() => {
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <header className="fixed w-full top-0 left-0 shadow-sm bg-whiteFixed z-20">
@@ -45,8 +45,8 @@ const Header = () => {
             }}
           />
         </div>
-        
-        { windowWidth < 768 ? (
+
+        {windowWidth < 768 ? (
           menu ? (
             <>
               <GrFormClose
@@ -56,15 +56,38 @@ const Header = () => {
                 }}
               />
               <nav className=" w-full flex flex-col gap-8 font-semibold py-6">
-                <Link className="whitespace-nowrap" href={"/login"}>
-                  Fazer login
-                </Link>
+                {token ? (
+                  <>
+                    <p className="cursor-pointer">Editar Perfil</p>
+                    <p className="cursor-pointer">Editar endereço</p>
+                    {!jwt_decode<any>(token).buyer && (
+                      <Link
+                        className="whitespace-nowrap"
+                        href={`/profile/${jwt_decode<any>(token).sub}`}>
+                        Meus Anúncios
+                      </Link>
+                    )}
+                    <Link
+                      className="whitespace-nowrap"
+                      href={"/login"}
+                      onClick={() => {
+                        destroyCookie(null, "projetofinal.token");
+                      }}>
+                      Sair
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link className="whitespace-nowrap" href={"/login"}>
+                      Fazer login
+                    </Link>
 
-                <Link className="big-outline-2" href={"/register"}>
-                  Cadastrar
-                </Link>
+                    <Link className="big-outline-2" href={"/register"}>
+                      Cadastrar
+                    </Link>
+                  </>
+                )}
               </nav>
-              
             </>
           ) : (
             <BiMenu
@@ -75,18 +98,48 @@ const Header = () => {
             />
           )
         ) : (
-          <nav className=" w-80 flex justify-around items-center font-semibold h-20 border-l border-grey-4">
-            {token ? <ProfileIcon name={token && jwt_decode<any>(token).userName}/> :
-            <>
-            <Link className="whitespace-nowrap" href={"/login"}>
-              Fazer login
-            </Link>
+          <nav className=" w-80 flex justify-around items-center h-20 border-l border-grey-4 relative">
+            {token ? (
+              <ProfileIcon
+                name={token && jwt_decode<any>(token).userName}
+                onClick={() => {
+                  setMenu(!menu);
+                }}
+              />
+            ) : (
+              <>
+                <Link className="whitespace-nowrap" href={"/login"}>
+                  Fazer login
+                </Link>
 
-            <Link className="big-outline-2" href={"/register"}>
-              Cadastrar
-            </Link>
-            </>
-            }
+                <Link className="big-outline-2" href={"/register"}>
+                  Cadastrar
+                </Link>
+              </>
+            )}
+            {token && menu && (
+              <>
+                <div className="w-[60%] bg-whiteFixed rounded absolute top-16 shadow-lg flex flex-col gap-6 p-6">
+                  <p className="cursor-pointer">Editar Perfil</p>
+                  <p className="cursor-pointer">Editar endereço</p>
+                  {!jwt_decode<any>(token).buyer && (
+                    <Link
+                      className="whitespace-nowrap"
+                      href={`/profile/${jwt_decode<any>(token).sub}`}>
+                      Meus Anúncios
+                    </Link>
+                  )}
+                  <Link
+                    className="whitespace-nowrap"
+                    href={"/login"}
+                    onClick={() => {
+                      destroyCookie(null, "projetofinal.token");
+                    }}>
+                    Sair
+                  </Link>
+                </div>
+              </>
+            )}
           </nav>
         )}
       </div>
