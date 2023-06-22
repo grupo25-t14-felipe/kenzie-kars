@@ -143,7 +143,7 @@ const EditProfile = ({ setEditProfileModal, userData, setUserData  }: iEditProfi
             placeholder={ userData?.description }
             {...register( "description" )}
           />
-          <div className="flex row gap-[10px]">
+          <div className="flex gap-[10px]">
             <div className="flex row gap-[10px]">
               <button 
                 type="button" 

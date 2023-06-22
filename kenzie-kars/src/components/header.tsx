@@ -8,11 +8,16 @@ import { useAuth } from "@/contexts/authContext";
 import ProfileIcon from "./profileIcon";
 import jwt_decode from "jwt-decode";
 import { destroyCookie } from "nookies";
+import { iUserResponse } from "@/schemas/user.schema";
+import EditProfile from "./editProfile";
+import api from "@/services/api";
 
 const Header = () => {
   const { router, token, setToken } = useAuth();
   const [menu, setMenu] = useState(false);
   const [windowWidth, setWindowWidth] = useState<number>(0);
+  const [editProfileModal, setEditProfileModal] = useState(false);
+  const [userData, setUserData] = useState<Omit<iUserResponse, "announcement"> | null>(null);
 
   useEffect(() => {
     setWindowWidth(window.innerWidth);
@@ -29,6 +34,14 @@ const Header = () => {
 
   return (
     <header className="fixed w-full top-0 left-0 shadow-sm bg-whiteFixed z-20">
+      {
+        editProfileModal && 
+        <EditProfile
+          setEditProfileModal={setEditProfileModal} 
+          userData={userData} 
+          setUserData={setUserData} 
+        />
+      }
       <div
         className={`w-full flex ${
           windowWidth < 768 && menu ? "flex-col" : "flex-row items-center"
@@ -58,7 +71,21 @@ const Header = () => {
               <nav className=" w-full flex flex-col gap-8 font-semibold py-6">
                 {token ? (
                   <>
-                    <p className="cursor-pointer">Editar Perfil</p>
+                    <p 
+                      className="cursor-pointer"
+                      onClick={ async () => {
+                        if( !userData ){
+                          const id = window.localStorage.getItem('@kenzie-kars-userId')
+                          await api.get(`/users/${id}`).then( res => {
+                            const { announcement, ...data } = res.data
+                            setUserData( data )
+                          }).catch( err => {console.log( 'erro na requisição: ', err) })
+                        }
+                        setEditProfileModal(true)
+                      }}
+                    >
+                      Editar Perfil
+                    </p>
                     <p className="cursor-pointer">Editar endereço</p>
                     {!jwt_decode<any>(token).buyer && (
                       <Link
@@ -121,7 +148,21 @@ const Header = () => {
             {token && menu && (
               <>
                 <div className="w-[60%] bg-whiteFixed rounded absolute top-16 shadow-lg flex flex-col gap-6 p-6">
-                  <p className="cursor-pointer">Editar Perfil</p>
+                  <p 
+                    className="cursor-pointer"
+                    onClick={ async () => {
+                      if( !userData ){
+                        const id = window.localStorage.getItem('@kenzie-kars-userId')
+                        await api.get(`/users/${id}`).then( res => {
+                          const { announcement, ...data } = res.data
+                          setUserData( data )
+                        }).catch( err => {console.log( 'erro na requisição: ', err) })
+                      }
+                      setEditProfileModal(true)
+                    }}
+                  >
+                    Editar Perfil
+                  </p>
                   <p className="cursor-pointer">Editar endereço</p>
                   {!jwt_decode<any>(token).buyer && (
                     <Link
