@@ -7,9 +7,12 @@ interface filterProps {
 }
 
 interface IFilterContext {
-  // ListAnnouncements: () => void;
-  Filter: (brand: string, model: string, color: string, year: string, fuel: string) => void;
   FilterInput: (price: string, mileage: string) => void;
+  FilterBrand: (brand: string) => void;
+  FilterModel: (model: string) => void;
+  FilterColor: (color: string) => void;
+  FilterYear: (year: string) => void;
+  FilterFuel: (fuel: string) => void;
 }
 
 export const FilterContext = createContext<IFilterContext>({} as IFilterContext);
@@ -30,30 +33,74 @@ export function FilterProvider({ children }: filterProps) {
       });
   }, []);
 
-  function Filter(brand: string, model: string, color: string, year: string, fuel: string) {
-    let filteredList = [...allAnnouncements];
-
-    if (brand !== "") {
-      filteredList = filteredList.filter((element) => newIncludes(element.brand, brand));
+  function FilterBrand(brand: string) {
+    console.log(brand);
+    if (brand === "") {
+      return setFilterList(allAnnouncements);
     }
+    const goFilter = allAnnouncements.filter((element) => {
+      const bolena = newIncludes(element.brand, brand);
+      if (bolena) {
+        return element;
+      }
+    });
+    setFilterList(goFilter);
+  }
 
-    if (model !== "") {
-      filteredList = filteredList.filter((element) => newIncludes(element.model, model));
+  function FilterModel(model: string) {
+    console.log(model);
+    if (model === "") {
+      return setFilterList(allAnnouncements);
     }
+    const goFilter = allAnnouncements.filter((element) => {
+      const bolena = newIncludes(element.model, model);
+      if (bolena) {
+        return element;
+      }
+    });
+    setFilterList(goFilter);
+  }
 
-    if (color !== "") {
-      filteredList = filteredList.filter((element) => newIncludes(element.color, color));
+  function FilterColor(color: string) {
+    console.log(color);
+    if (color === "") {
+      return setFilterList(allAnnouncements);
     }
+    const goFilter = allAnnouncements.filter((element) => {
+      const bolena = newIncludes(element.color, color);
+      if (bolena) {
+        return element;
+      }
+    });
+    setFilterList(goFilter);
+  }
 
-    if (year !== "") {
-      filteredList = filteredList.filter((element) => newIncludes(element.year, year));
+  function FilterYear(year: string) {
+    console.log(year);
+    if (year === "") {
+      return setFilterList(allAnnouncements);
     }
+    const goFilter = allAnnouncements.filter((element) => {
+      const bolena = newIncludes(element.year, year);
+      if (bolena) {
+        return element;
+      }
+    });
+    setFilterList(goFilter);
+  }
 
-    if (fuel !== "") {
-      filteredList = filteredList.filter((element) => newIncludes(element.fuel, fuel));
+  function FilterFuel(fuel: string) {
+    console.log(fuel);
+    if (fuel === "") {
+      return setFilterList(allAnnouncements);
     }
-
-    setFilterList(filteredList);
+    const goFilter = allAnnouncements.filter((element) => {
+      const bolena = newIncludes(element.fuel, fuel);
+      if (bolena) {
+        return element;
+      }
+    });
+    setFilterList(goFilter);
   }
 
   function FilterInput(price: string, mileage: string) {
@@ -81,6 +128,9 @@ export function FilterProvider({ children }: filterProps) {
   }
 
   return (
-    <FilterContext.Provider value={{ Filter, FilterInput }}>{children}</FilterContext.Provider>
+    <FilterContext.Provider
+      value={{ FilterInput, FilterBrand, FilterModel, FilterColor, FilterYear, FilterFuel }}>
+      {children}
+    </FilterContext.Provider>
   );
 }
