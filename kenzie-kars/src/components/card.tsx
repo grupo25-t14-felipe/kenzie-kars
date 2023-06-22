@@ -7,9 +7,10 @@ interface ICardProps {
   children: ReactNode;
   announcement: iAnnouncement
   userAnnouncement: iUserAnnouncements
+  onClickHabilit: boolean
 }
 
-const Card = ({ children, announcement, userAnnouncement }: any) => {
+const Card = ({ children, announcement, userAnnouncement, onClickHabilit }: any) => {
   const router = useRouter();
   const [validImg, setValidImg] = useState(true)
 
@@ -27,7 +28,9 @@ const Card = ({ children, announcement, userAnnouncement }: any) => {
     <li className="px-4 py-8 flex flex-col gap-6 text-grey-1 min-w-[100%] md:min-w-[50%] 
     lg:min-w-[33%] xl:min-w-[25%] w-[100%] md:w-[50%] lg:w-[33%] xl:w-[25%] relative cursor-pointer"
     onClick={()=>{
-      router.push(`/announcement/${announcement?.id}`)
+      if( onClickHabilit ){
+        router.push(`/announcement/${announcement?.id}`)
+      }
     }}>
       <div className="w-full h-[400px] md:h-[150px] flex justify-center items-center">
         {validImg ? <img className="w-full h-full" src={announcement?.cover_image} alt="carro"  />:

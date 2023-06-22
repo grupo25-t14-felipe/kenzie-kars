@@ -68,8 +68,15 @@ const returnAnnouncementSchema = createAnnouncementSchema.extend({
   user: createUserSchema
 });
 
+export const UpdateeAnnouncementSchema = z.object({
+  mileage: z.string(),
+  color: z.string(),
+  price: z.string(),
+  description: z.string(),
+  cover_image: z.string(),
+}).partial()
+
 export type iUserAnnouncements = z.infer<typeof UserAnnouncementsSchema>;
 export type iAllAnnouncements = z.infer<typeof returnAnnouncementSchemaAll>;
 export type iAnnouncement = z.infer<typeof returnAnnouncementSchema>;
-
-
+export type iUpdateAnnouncementRequest = z.infer<typeof UpdateeAnnouncementSchema>;

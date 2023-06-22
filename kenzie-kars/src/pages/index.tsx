@@ -20,9 +20,9 @@ export default function Home({ announcements, token }: any) {
   const [openFilter, setOpenFilter] = useState(false);
   const { setToken } = useAuth();
   
-  setToken(token)
-
+  
   useEffect(() => {
+    setToken(token)
     setWindowWidth(window.innerWidth);
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
@@ -55,7 +55,11 @@ export default function Home({ announcements, token }: any) {
         } flex min-h-screen relative ${inter.className} gap-20 pb-20 pt-14`}>
         <ul className="w-full md:w-[70%] flex overflow-auto md:flex-wrap relative h-full">
           {announcements.map((announcement: any) => (
-            <Card key={announcement.id} announcement={announcement}>
+            <Card 
+              key={announcement.id} 
+              announcement={announcement} 
+              onClickHabilit={true}
+            >
               <span></span>
             </Card>
           ))}

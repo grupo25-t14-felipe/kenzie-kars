@@ -180,7 +180,7 @@
     }
 
     .small-outline-1:hover {
-        @apply bg-grey-1 border-[1.5px] border-solid border-grey-1 rounded text-grey-10 py-[12px] px-[28px];
+        @apply bg-grey-1 border-[1.5px] border-solid border-grey-1 rounded text-grey-10 py-[8px] px-[28px];
     }
 
     .big-outline-2 {
