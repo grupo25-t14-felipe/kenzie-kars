@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { createAnnouncementSchema } from "./announcement.schema";
-import { type } from "os";
 
 const userRequestSchema = z.object({
   name: z.string().nonempty("Campo obrigatório!"),
