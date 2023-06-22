@@ -4,12 +4,13 @@ import Header from "@/components/header";
 import { Inter } from "next/font/google";
 import { GetServerSideProps } from "next";
 import api from "@/services/api";
-import { iUserAnnouncements } from "@/schemas/announcement.schema";
+import { iAnnouncement, iUserAnnouncements } from "@/schemas/announcement.schema";
 import { useAuth } from "@/contexts/authContext";
 const inter = Inter({ subsets: ["latin"] });
 import jwt_decode from "jwt-decode";
 import { useState } from "react";
 import RegisterAnnouncement, { getBrands } from "@/components/registerAnnouncement";
+import UpdateAnnouncement from "@/components/updateAnnouncemente";
 
 interface ProfileProps {
   userAnnouncements: iUserAnnouncements;
@@ -19,16 +20,30 @@ export default function Profile({ userAnnouncements }: ProfileProps) {
   const { router, token } = useAuth();
   const [createAd, setCreateAd] = useState(false)
   const [brands, setBrands] = useState<string[]>()
+  const [updateAnnouncementModal, setUpdateAnnouncementModal] = useState(false)
+  const [announcement, setAnnouncement] = useState<Omit<iAnnouncement, 'user'> | null>(null)
   
   const requestBrands = async () => {
     const brands = await getBrands()
     setBrands(brands)
     setCreateAd( true )
   }
+
+  const editAnnouncement = (announcement: Omit<iAnnouncement, 'user'>) => {
+    setAnnouncement( announcement )
+    setUpdateAnnouncementModal(true)
+  }
  
   return (
     <>
       {createAd && <RegisterAnnouncement setCreateAd={setCreateAd} brands={brands} />}
+      {updateAnnouncementModal && 
+        <UpdateAnnouncement 
+          announcement={announcement} 
+          setAnnouncement={setAnnouncement} 
+          setUpdateAnnouncementModal={setUpdateAnnouncementModal}
+        />
+      }
       <Header />
       <main
         className={`flex min-h-screen relative ${inter.className} gap-20 pt-[75px] bg-grey-8 body-1-400 z-10`}>
@@ -55,10 +70,16 @@ export default function Profile({ userAnnouncements }: ProfileProps) {
               <Card
                 key={announcement.id}
                 announcement={announcement}
-                userAnnouncement={userAnnouncements}>
+                userAnnouncement={userAnnouncements}
+                onClickHabilit={false}
+              >
                 {token && jwt_decode<any>(token).sub == userAnnouncements.id ? (
                   <div className="flex gap-4">
-                    <button className="small-outline-1 max-w-max">Editar</button>
+                    <button className="small-outline-1 max-w-max" onClick={() => {
+                      editAnnouncement(announcement)}
+                    }>
+                      Editar
+                    </button>
                     <button className="small-outline-1 max-w-max truncate">Ver detalhes</button>
                   </div>
                 ) : (

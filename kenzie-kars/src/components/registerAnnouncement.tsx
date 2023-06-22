@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,7 +15,7 @@ interface iModel {
 }
 
 interface iRegisterAnnouncement {
-  setCreateAd: React.Dispatch<React.SetStateAction<boolean>>,
+  setCreateAd: Dispatch<SetStateAction<boolean>>,
   brands: string[] | undefined
 }
 
@@ -80,13 +80,9 @@ const RegisterAnnouncement = ({ setCreateAd, brands }: iRegisterAnnouncement) =>
     data['price_table_fipe'] = fipe;
     
     return await api.post( '/announcements', data ).then( async (res: any) => {
-      console.log(res);
-      
       if( images ){
         await images.map( async (image: typeof CreateImageSchema) => {
-          return await api.post( `/announcements/${res.data.id}/image`, image ).then( resImage => resImage ).catch( err => {
-            console.error(err);
-          })
+          await api.post( `/announcements/${res.data.id}/image`, image ).then( resImage => resImage )
         })
       }
 
