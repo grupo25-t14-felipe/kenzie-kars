@@ -29,21 +29,25 @@ const UpdateAddress = ({ setUpdateAddressModal, address, setAddress }: iUpdateAd
     
     const userId = window.localStorage.getItem( '@kenzie-kars-userId' )
     
-    await api.patch( `/users/${userId}/address/${address?.id}`, data).then( (res) => {
+    return await api.patch( `/users/${userId}/address/${address?.id}`, data).then( (res) => {
       const dataUpdated = AddressResponseSchema.parse( res.data )
       setAddress( dataUpdated )
+      
+      reset();
+      setUpdateAddressModal(false)
+
+      return
     }).catch( err => err)
-
-    reset();
-
-    return
   }
 
   const deleteAddress = async () => {
-    // await api.delete( `/users/${}`)
-    setUpdateAddressModal(false)
+    const userId = window.localStorage.getItem( '@kenzie-kars-userId' )
 
-    return
+    return await api.delete( `/users/${userId}/address/${address?.id}`).then( res => {
+      setUpdateAddressModal(false)
+  
+      return
+    }).catch( err => err )
   }
 
   return(

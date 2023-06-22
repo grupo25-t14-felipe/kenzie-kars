@@ -21,6 +21,7 @@ const Header = () => {
   const [editProfileModal, setEditProfileModal] = useState(false);
   const [userData, setUserData] = useState<Omit<iUserResponse, "announcement"> | null>(null);
   const [updateAddressModal, setUpdateAddressModal] = useState(false)
+  const [updateAddressButton, setUpdateAddressButton] = useState(true)
   const [address, setAddress] = useState<iAddressResponse | null>(null);
 
   useEffect(() => {
@@ -80,30 +81,46 @@ const Header = () => {
               <nav className=" w-full flex flex-col gap-8 font-semibold py-6">
                 {token ? (
                   <>
-                    <p 
-                      className="cursor-pointer"
-                      onClick={ async () => {
-                        if( !userData ){
-                          const id = window.localStorage.getItem('@kenzie-kars-userId')
-                          await api.get(`/users/${id}`).then( res => {
-                            const { announcement, ...data } = res.data
-                            setUserData( data )
-                          }).catch( err => {console.log( 'erro na requisição: ', err) })
-                        }
-                        setEditProfileModal(true)
-                      }}
-                    >
-                      Editar Perfil
-                    </p>
-                    <p 
+                    {updateAddressButton && <p 
                       className="cursor-pointer"
                       onClick={async () => {
                         const id = window.localStorage.getItem( '@kenzie-kars-userId' )
-                        await api.get( `/users/${id}`).then( res => {
+                        return await api.get( `/users/${id}`).then( res => {
+                          if( !res.data.address ){
+                            setAddress( null )
+                            setUpdateAddressButton( false )
+
+                            return
+                          }
+
                           const data = AddressResponseSchema.parse( res.data.address );
+
                           setAddress( data )
+                          setUpdateAddressModal(true)
+
+                          return
+                        }).catch( err => err)
+                      }}
+                    >
+                      Editar Perfil
+                    </p>}
+                    <p 
+                      className="cursor-pointer"
+                      id="editAddress"
+                      onClick={async () => {
+                        const id = window.localStorage.getItem( '@kenzie-kars-userId' )
+                        return await api.get( `/users/${id}`).then( res => {
+                          const data = AddressResponseSchema.nullable().parse( res.data.address );
+
+                          setAddress( data )
+                          setUpdateAddressModal(true)
+
+                          return
+                        }).catch( err => {
+                          setAddress( null )
+
+                          return
                         })
-                        setUpdateAddressModal(true)
                       }}
                     >
                       Editar endereço
@@ -184,19 +201,30 @@ const Header = () => {
                   >
                     Editar Perfil
                   </p>
-                  <p 
+                  {updateAddressButton && <p 
                     className="cursor-pointer"
+                    id="editAddress"
                     onClick={async () => {
-                      const id = window.localStorage.getItem( '@kenzie-kars-userId' )
-                      await api.get( `/users/${id}`).then( res => {
-                        const data = AddressResponseSchema.parse( res.data.address );
-                        setAddress( data )
-                      })
-                      setUpdateAddressModal(true)
-                    }}
+                        const id = window.localStorage.getItem( '@kenzie-kars-userId' )
+                        return await api.get( `/users/${id}`).then( res => {
+                          if( !res.data.address ){
+                            setAddress( null )
+                            setUpdateAddressButton( false )
+
+                            return
+                          }
+
+                          const data = AddressResponseSchema.parse( res.data.address );
+
+                          setAddress( data )
+                          setUpdateAddressModal(true)
+
+                          return
+                        }).catch( err => err)
+                      }}
                   >
                     Editar endereço
-                  </p>
+                  </p>}
                   {!jwt_decode<any>(token).buyer && (
                     <Link
                       className="whitespace-nowrap"
