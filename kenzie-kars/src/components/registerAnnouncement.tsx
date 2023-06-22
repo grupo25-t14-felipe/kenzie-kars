@@ -4,6 +4,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import api from "@/services/api";
+import { useAuth } from "@/contexts/authContext";
 
 interface iModel {
   id: string
@@ -52,6 +53,7 @@ export const getModels = async ( brand: string ) => {
 }
 
 const RegisterAnnouncement = ({ setCreateAd, brands }: iRegisterAnnouncement) => {
+  const { setModal } = useAuth();
   const { register, handleSubmit, reset, formState:{ errors }, setValue } = useForm({
     mode: 'onSubmit',
     resolver: zodResolver( CreateAnnouncementSchema )
@@ -81,7 +83,7 @@ const RegisterAnnouncement = ({ setCreateAd, brands }: iRegisterAnnouncement) =>
     
     return await api.post( '/announcements', data ).then( async (res: any) => {
       console.log(res);
-      
+      setModal(true);
       if( images ){
         await images.map( async (image: typeof CreateImageSchema) => {
           return await api.post( `/announcements/${res.data.id}/image`, image ).then( resImage => resImage ).catch( err => {
