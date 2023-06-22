@@ -10,6 +10,7 @@ const inter = Inter({ subsets: ["latin"] });
 import jwt_decode from "jwt-decode";
 import { useState } from "react";
 import RegisterAnnouncement, { getBrands } from "@/components/registerAnnouncement";
+import CreatedAnnouncement from "@/components/createdAnnouncement";
 import UpdateAnnouncement from "@/components/updateAnnouncemente";
 
 interface ProfileProps {
@@ -17,9 +18,10 @@ interface ProfileProps {
 }
 
 export default function Profile({ userAnnouncements }: ProfileProps) {
-  const { router, token } = useAuth();
+  const { router, token, showModal, setModal } = useAuth();
   const [createAd, setCreateAd] = useState(false)
   const [brands, setBrands] = useState<string[]>()
+ 
   const [updateAnnouncementModal, setUpdateAnnouncementModal] = useState(false)
   const [announcement, setAnnouncement] = useState<Omit<iAnnouncement, 'user'> | null>(null)
   
@@ -100,6 +102,7 @@ export default function Profile({ userAnnouncements }: ProfileProps) {
             <p className="text-brand-1 cursor-pointer">{"Seguinte >"}</p>
           </div>
         </div>
+        <CreatedAnnouncement isVisible={showModal} onClose={() => setModal(false)} />
       </main>
       <Footer />
     </>

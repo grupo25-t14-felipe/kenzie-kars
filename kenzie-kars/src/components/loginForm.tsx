@@ -62,8 +62,9 @@ const LoginForm = () => {
         </div>
         <button
           className="big-grey-1 w-full mb-11"
+          type="button"
           onClick={() => {
-            router.push("");
+            router.push("/register");
           }}>
           Cadastrar
         </button>

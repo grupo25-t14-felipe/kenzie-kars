@@ -15,7 +15,7 @@ import UpdateAddress from "./updateAddress";
 import { AddressResponseSchema, iAddressResponse } from "@/schemas/address.schema";
 
 const Header = () => {
-  const { router, token } = useAuth();
+  const { router, token, setToken } = useAuth();
   const [menu, setMenu] = useState(false);
   const [windowWidth, setWindowWidth] = useState<number>(0);
   const [editProfileModal, setEditProfileModal] = useState(false);
@@ -115,14 +115,15 @@ const Header = () => {
                         Meus Anúncios
                       </Link>
                     )}
-                    <Link
-                      className="whitespace-nowrap"
-                      href={"/login"}
+                    <p
+                      className="cursor-pointer"
                       onClick={() => {
-                        destroyCookie(null, "projetofinal.token");
+                        destroyCookie(null, "projetofinal.token")
+                        setToken(false)
+                        router.push("/login")
                       }}>
                       Sair
-                    </Link>
+                    </p>
                   </>
                 ) : (
                   <>
@@ -203,14 +204,15 @@ const Header = () => {
                       Meus Anúncios
                     </Link>
                   )}
-                  <Link
-                    className="whitespace-nowrap"
-                    href={"/login"}
+                  <p
+                    className="cursor-pointer"
                     onClick={() => {
-                      destroyCookie(null, "projetofinal.token");
+                      destroyCookie(null, "projetofinal.token")
+                      setToken(false)
+                      router.push("/login")
                     }}>
                     Sair
-                  </Link>
+                  </p>
                 </div>
               </>
             )}

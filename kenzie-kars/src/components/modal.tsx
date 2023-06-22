@@ -15,7 +15,7 @@ const Modal = ({ isVisible, onClose }: any) => {
           <p>Agora você poderá ver seus negócios crescendo em grande escala</p>
         </div>
         <nav className="w-full mt-6 p-4">
-          <Link className="whitespace-nowrap medium-brand-1" href={"/login"}>
+          <Link className="whitespace-nowrap medium-brand-1" href={"/login"} onClick={()=> onClose()}>
             Ir para login
           </Link>
         </nav>
