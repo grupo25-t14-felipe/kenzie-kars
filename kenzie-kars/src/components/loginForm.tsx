@@ -43,7 +43,7 @@ const LoginForm = () => {
           </label>
           <div className="">
             <input
-              type="text"
+              type="password"
               placeholder="Digitar senha"
               className="input-text w-full"
               {...register("password")}
