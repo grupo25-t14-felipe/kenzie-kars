@@ -17,14 +17,6 @@ const RegisterForm = () => {
   const { registerSubmit, showModal, setModal } = useAuth();
   const [isBuyer, setIsBuyer] = useState(false);
 
-  const handleCompradorClick = () => {
-    setIsBuyer(false);
-  };
-
-  const handleAnuncianteClick = () => {
-    setIsBuyer(true);
-  };
-
   const onSubmit = (data: UserData) => {
     console.log(data);
     const userData = {
@@ -191,7 +183,7 @@ const RegisterForm = () => {
               <button
                 type="button"
                 className={`border-[1.5px] border-solid rounded text-whiteFixed py-[12px] px-[28px] bg-grey-3 ${
-                  isBuyer ? "selected" : "big-brand-1"
+                  isBuyer ? "big-brand-1" : "border-[1.5px] border-solid rounded text-whiteFixed py-[12px] px-[28px] bg-grey-3"
                 }`}
                 onClick={() => setIsBuyer(true)}>
                 Comprador
@@ -199,7 +191,7 @@ const RegisterForm = () => {
               <button
                 type="button"
                 className={`border-[1.5px] border-solid rounded text-whiteFixed py-[12px] px-[28px] bg-grey-3 ${
-                  isBuyer ? "big-brand-1" : "selected"
+                  isBuyer ? "border-[1.5px] border-solid rounded text-whiteFixed py-[12px] px-[28px] bg-grey-3" : "big-brand-1"
                 }`}
                 onClick={() => setIsBuyer(false)}>
                 Anunciante

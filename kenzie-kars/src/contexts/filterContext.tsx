@@ -7,9 +7,17 @@ interface filterProps {
 }
 
 interface IFilterContext {
-  // ListAnnouncements: () => void;
-  Filter: (brand: string, model: string, color: string, year: string, fuel: string) => void;
-  FilterInput: (price: string, mileage: string) => void;
+  FilterBrand: (brand: string) => void;
+  FilterModel: (model: string) => void;
+  FilterColor: (color: string) => void;
+  FilterYear: (year: string) => void;
+  FilterFuel: (fuel: string) => void;
+  FilterInputPrice: (price: string) => void;
+  FilterInputMileage: (mileage: string) => void;
+  filterList: iAnnouncement[];
+  setFilterList: React.Dispatch<React.SetStateAction<iAnnouncement[]>>;
+  allAnnouncements: iAnnouncement[];
+  setAllAnnouncements: React.Dispatch<React.SetStateAction<iAnnouncement[]>>;
 }
 
 export const FilterContext = createContext<IFilterContext>({} as IFilterContext);
@@ -30,57 +38,126 @@ export function FilterProvider({ children }: filterProps) {
       });
   }, []);
 
-  function Filter(brand: string, model: string, color: string, year: string, fuel: string) {
-    let filteredList = [...allAnnouncements];
+  function FilterBrand(brand: string) {
 
-    if (brand !== "") {
-      filteredList = filteredList.filter((element) => newIncludes(element.brand, brand));
+    if (brand === "") {
+      return setFilterList(allAnnouncements);
     }
+    const goFilter = allAnnouncements.filter((element) => {
 
-    if (model !== "") {
-      filteredList = filteredList.filter((element) => newIncludes(element.model, model));
-    }
+      const boolean = newIncludes(element.brand, brand);
+      if (boolean) {
+        return element;
+      }
+    });
 
-    if (color !== "") {
-      filteredList = filteredList.filter((element) => newIncludes(element.color, color));
-    }
-
-    if (year !== "") {
-      filteredList = filteredList.filter((element) => newIncludes(element.year, year));
-    }
-
-    if (fuel !== "") {
-      filteredList = filteredList.filter((element) => newIncludes(element.fuel, fuel));
-    }
-
-    setFilterList(filteredList);
+    setFilterList(goFilter);
   }
 
-  function FilterInput(price: string, mileage: string) {
-    let filteredList = [...allAnnouncements];
+  function FilterModel(model: string) {
 
-    if (price !== "") {
-      filteredList = filteredList.filter((element) => element.price.includes(price));
+    if (model === "") {
+      return setFilterList(allAnnouncements);
+    }
+    const goFilter = allAnnouncements.filter((element) => {
+      const bolena = newIncludes(element.model, model);
+      if (bolena) {
+        return element;
+      }
+    });
+    setFilterList(goFilter);
+  }
+
+  function FilterColor(color: string) {
+
+    if (color === "") {
+      return setFilterList(allAnnouncements);
+    }
+    const goFilter = allAnnouncements.filter((element) => {
+      const bolena = newIncludes(element.color.toLowerCase(), color.toLowerCase());
+      if (bolena) {
+        return element;
+      }
+    });
+    setFilterList(goFilter);
+  }
+
+  function FilterYear(year: string) {
+
+    if (year === "") {
+      return setFilterList(allAnnouncements);
+    }
+    const goFilter = allAnnouncements.filter((element) => {
+      const bolena = newIncludes(element.year, year);
+      if (bolena) {
+        return element;
+      }
+    });
+    setFilterList(goFilter);
+  }
+
+  function FilterFuel(fuel: string) {
+
+    if (fuel === "") {
+      return setFilterList(allAnnouncements);
+    }
+    const goFilter = allAnnouncements.filter((element) => {
+      const bolena = newIncludes(element.fuel, fuel);
+      if (bolena) {
+        return element;
+      }
+    });
+    setFilterList(goFilter);
+  }
+
+  function FilterInputPrice(price: string) {
+    if (price === "") {
+      return setFilterList(allAnnouncements);
     }
 
-    if (mileage !== "") {
-      filteredList = filteredList.filter((element) => element.mileage.includes(mileage));
+    const goFilter = allAnnouncements.filter((element) =>
+      element.mileage.toLowerCase().includes(price.toLowerCase())
+    );
+
+    setFilterList(goFilter);
+  }
+
+  function FilterInputMileage(mileage: string) {
+    if (mileage === "") {
+      return setFilterList(allAnnouncements);
     }
 
-    setFilterList(filteredList);
+    const goFilter = allAnnouncements.filter((element) =>
+      element.mileage.toLowerCase().includes(mileage.toLowerCase())
+    );
+
+    setFilterList(goFilter);
   }
 
   function newIncludes(arr: string, item: string, startFrom = 0) {
     let res = false;
-    for (let i = startFrom; i < arr.length; i++) {
-      if (arr[i] === item) {
+      if (arr === item) {
         return (res = true);
       }
-    }
     return res;
   }
 
   return (
-    <FilterContext.Provider value={{ Filter, FilterInput }}>{children}</FilterContext.Provider>
+    <FilterContext.Provider
+      value={{
+        FilterBrand,
+        FilterModel,
+        FilterColor,
+        FilterYear,
+        FilterFuel,
+        filterList,
+        setFilterList,
+        FilterInputPrice,
+        FilterInputMileage,
+        allAnnouncements,
+        setAllAnnouncements
+      }}>
+      {children}
+    </FilterContext.Provider>
   );
 }
