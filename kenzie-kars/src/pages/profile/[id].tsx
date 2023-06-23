@@ -21,6 +21,7 @@ export default function Profile({ userAnnouncements }: ProfileProps) {
   const { router, token, showModal, setModal } = useAuth();
   const [createAd, setCreateAd] = useState(false)
   const [brands, setBrands] = useState<string[]>()
+  const [Announcemets, setAnnouncemets] = useState(userAnnouncements.announcement)
  
   const [updateAnnouncementModal, setUpdateAnnouncementModal] = useState(false)
   const [announcement, setAnnouncement] = useState<Omit<iAnnouncement, 'user'> | null>(null)
@@ -28,7 +29,7 @@ export default function Profile({ userAnnouncements }: ProfileProps) {
   const requestBrands = async () => {
     const brands = await getBrands()
     setBrands(brands)
-    setCreateAd( true )
+    setCreateAd(true)
   }
 
   const editAnnouncement = (announcement: Omit<iAnnouncement, 'user'>) => {
@@ -38,7 +39,7 @@ export default function Profile({ userAnnouncements }: ProfileProps) {
  
   return (
     <>
-      {createAd && <RegisterAnnouncement setCreateAd={setCreateAd} brands={brands} />}
+      {createAd && <RegisterAnnouncement setCreateAd={setCreateAd} brands={brands} setAnnouncements={setAnnouncemets}/>}
       {updateAnnouncementModal && 
         <UpdateAnnouncement 
           announcement={announcement} 
@@ -68,7 +69,7 @@ export default function Profile({ userAnnouncements }: ProfileProps) {
           </div>
           <h3 className="heading-5-600 text-left w-full pl-[8%]">Anúncios</h3>
           <ul className="w-full md:w-[80%] flex overflow-auto md:flex-wrap relative h-full">
-            {userAnnouncements.announcement.map((announcement) => (
+            {Announcemets.map((announcement) => (
               <Card
                 key={announcement.id}
                 announcement={announcement}
