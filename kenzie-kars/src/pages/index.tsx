@@ -61,11 +61,9 @@ export default function Home({ announcements, token }: any) {
                   <span></span>
                 </Card>
               ))
-            : announcements.map((announcement: any) => (
-                <Card key={announcement.id} announcement={announcement} onClickHabilit={true}>
-                  <span></span>
-                </Card>
-              ))}
+            : <div>
+              <h2>Não foi encontrado nenhum resultado de busca.</h2>
+              </div>}
           <div className="w-full font-semibold md:flex gap-8 justify-center items-center hidden">
             <p className="text-grey-3">
               <span className="text-grey-2">1</span> de 2
