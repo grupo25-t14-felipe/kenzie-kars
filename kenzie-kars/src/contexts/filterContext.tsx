@@ -39,12 +39,7 @@ export function FilterProvider({ children }: filterProps) {
   }, []);
 
   function FilterBrand(brand: string) {
-
-    if (brand === "") {
-      return setFilterList(allAnnouncements);
-    }
-    const goFilter = allAnnouncements.filter((element) => {
-
+    const goFilter = filterList.filter((element) => {
       const boolean = newIncludes(element.brand, brand);
       if (boolean) {
         return element;
@@ -55,11 +50,7 @@ export function FilterProvider({ children }: filterProps) {
   }
 
   function FilterModel(model: string) {
-
-    if (model === "") {
-      return setFilterList(allAnnouncements);
-    }
-    const goFilter = allAnnouncements.filter((element) => {
+    const goFilter = filterList.filter((element) => {
       const bolena = newIncludes(element.model, model);
       if (bolena) {
         return element;
@@ -69,11 +60,7 @@ export function FilterProvider({ children }: filterProps) {
   }
 
   function FilterColor(color: string) {
-
-    if (color === "") {
-      return setFilterList(allAnnouncements);
-    }
-    const goFilter = allAnnouncements.filter((element) => {
+    const goFilter = filterList.filter((element) => {
       const bolena = newIncludes(element.color.toLowerCase(), color.toLowerCase());
       if (bolena) {
         return element;
@@ -83,11 +70,7 @@ export function FilterProvider({ children }: filterProps) {
   }
 
   function FilterYear(year: string) {
-
-    if (year === "") {
-      return setFilterList(allAnnouncements);
-    }
-    const goFilter = allAnnouncements.filter((element) => {
+    const goFilter = filterList.filter((element) => {
       const bolena = newIncludes(element.year, year);
       if (bolena) {
         return element;
@@ -97,11 +80,7 @@ export function FilterProvider({ children }: filterProps) {
   }
 
   function FilterFuel(fuel: string) {
-
-    if (fuel === "") {
-      return setFilterList(allAnnouncements);
-    }
-    const goFilter = allAnnouncements.filter((element) => {
+    const goFilter = filterList.filter((element) => {
       const bolena = newIncludes(element.fuel, fuel);
       if (bolena) {
         return element;
@@ -111,11 +90,7 @@ export function FilterProvider({ children }: filterProps) {
   }
 
   function FilterInputPrice(price: string) {
-    if (price === "") {
-      return setFilterList(allAnnouncements);
-    }
-
-    const goFilter = allAnnouncements.filter((element) =>
+    const goFilter = filterList.filter((element) =>
       element.mileage.toLowerCase().includes(price.toLowerCase())
     );
 
@@ -123,11 +98,7 @@ export function FilterProvider({ children }: filterProps) {
   }
 
   function FilterInputMileage(mileage: string) {
-    if (mileage === "") {
-      return setFilterList(allAnnouncements);
-    }
-
-    const goFilter = allAnnouncements.filter((element) =>
+    const goFilter = filterList.filter((element) =>
       element.mileage.toLowerCase().includes(mileage.toLowerCase())
     );
 
@@ -136,9 +107,9 @@ export function FilterProvider({ children }: filterProps) {
 
   function newIncludes(arr: string, item: string, startFrom = 0) {
     let res = false;
-      if (arr === item) {
-        return (res = true);
-      }
+    if (arr === item) {
+      return (res = true);
+    }
     return res;
   }
 
