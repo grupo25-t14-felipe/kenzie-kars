@@ -4,7 +4,7 @@ import Footer from "@/components/footer";
 import Header from "@/components/header";
 import { Inter } from "next/font/google";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { GrFormClose } from "react-icons/gr";
 import carIntro from "../assets/carIntro.png";
 import { GetServerSideProps } from "next";
@@ -12,6 +12,7 @@ import api from "@/services/api";
 import { iAllAnnouncements } from "@/schemas/announcement.schema";
 import nookies from "nookies";
 import { useAuth } from "@/contexts/authContext";
+import { FilterContext } from "@/contexts/filterContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,10 +20,10 @@ export default function Home({ announcements, token }: any) {
   const [windowWidth, setWindowWidth] = useState<number>(0);
   const [openFilter, setOpenFilter] = useState(false);
   const { setToken } = useAuth();
-  
-  
+  const { filterList } = useContext(FilterContext);
+
   useEffect(() => {
-    setToken(token)
+    setToken(token);
     setWindowWidth(window.innerWidth);
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
@@ -32,7 +33,7 @@ export default function Home({ announcements, token }: any) {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-  
+
   return (
     <>
       <Header />
@@ -54,15 +55,17 @@ export default function Home({ announcements, token }: any) {
           windowWidth < 768 ? "flex-col items-center" : "flex-row-reverse justify-between"
         } flex min-h-screen relative ${inter.className} gap-20 pb-20 pt-14`}>
         <ul className="w-full md:w-[70%] flex overflow-auto md:flex-wrap relative h-full">
-          {announcements.map((announcement: any) => (
-            <Card 
-              key={announcement.id} 
-              announcement={announcement} 
-              onClickHabilit={true}
-            >
-              <span></span>
-            </Card>
-          ))}
+          {filterList.length > 0
+            ? filterList?.map((announcement: any) => (
+                <Card key={announcement.id} announcement={announcement} onClickHabilit={true}>
+                  <span></span>
+                </Card>
+              ))
+            : announcements.map((announcement: any) => (
+                <Card key={announcement.id} announcement={announcement} onClickHabilit={true}>
+                  <span></span>
+                </Card>
+              ))}
           <div className="w-full font-semibold md:flex gap-8 justify-center items-center hidden">
             <p className="text-grey-3">
               <span className="text-grey-2">1</span> de 2
@@ -112,7 +115,7 @@ export default function Home({ announcements, token }: any) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const response = await api.get<iAllAnnouncements>(`/announcements`);
   const cookies = nookies.get(context);
-  
+
   return {
     props: { announcements: response.data, token: cookies["projetofinal.token"] || null }
   };

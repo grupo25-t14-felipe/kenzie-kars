@@ -1,7 +1,8 @@
 import Profile from "./profileIcon";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useContext, useEffect, useState } from "react";
 import { iAnnouncement, iUserAnnouncements } from "@/schemas/announcement.schema";
 import { useRouter } from "next/router";
+import { FilterContext } from "@/contexts/filterContext";
 
 interface ICardProps {
   children: ReactNode;

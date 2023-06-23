@@ -7,12 +7,17 @@ interface filterProps {
 }
 
 interface IFilterContext {
-  FilterInput: (price: string, mileage: string) => void;
   FilterBrand: (brand: string) => void;
   FilterModel: (model: string) => void;
   FilterColor: (color: string) => void;
   FilterYear: (year: string) => void;
   FilterFuel: (fuel: string) => void;
+  FilterInputPrice: (price: string) => void;
+  FilterInputMileage: (mileage: string) => void;
+  filterList: iAnnouncement[];
+  setFilterList: React.Dispatch<React.SetStateAction<iAnnouncement[]>>;
+  allAnnouncements: iAnnouncement[];
+  setAllAnnouncements: React.Dispatch<React.SetStateAction<iAnnouncement[]>>;
 }
 
 export const FilterContext = createContext<IFilterContext>({} as IFilterContext);
@@ -34,21 +39,23 @@ export function FilterProvider({ children }: filterProps) {
   }, []);
 
   function FilterBrand(brand: string) {
-    console.log(brand);
+
     if (brand === "") {
       return setFilterList(allAnnouncements);
     }
     const goFilter = allAnnouncements.filter((element) => {
-      const bolena = newIncludes(element.brand, brand);
-      if (bolena) {
+
+      const boolean = newIncludes(element.brand, brand);
+      if (boolean) {
         return element;
       }
     });
+
     setFilterList(goFilter);
   }
 
   function FilterModel(model: string) {
-    console.log(model);
+
     if (model === "") {
       return setFilterList(allAnnouncements);
     }
@@ -62,12 +69,12 @@ export function FilterProvider({ children }: filterProps) {
   }
 
   function FilterColor(color: string) {
-    console.log(color);
+
     if (color === "") {
       return setFilterList(allAnnouncements);
     }
     const goFilter = allAnnouncements.filter((element) => {
-      const bolena = newIncludes(element.color, color);
+      const bolena = newIncludes(element.color.toLowerCase(), color.toLowerCase());
       if (bolena) {
         return element;
       }
@@ -76,7 +83,7 @@ export function FilterProvider({ children }: filterProps) {
   }
 
   function FilterYear(year: string) {
-    console.log(year);
+
     if (year === "") {
       return setFilterList(allAnnouncements);
     }
@@ -90,7 +97,7 @@ export function FilterProvider({ children }: filterProps) {
   }
 
   function FilterFuel(fuel: string) {
-    console.log(fuel);
+
     if (fuel === "") {
       return setFilterList(allAnnouncements);
     }
@@ -103,33 +110,53 @@ export function FilterProvider({ children }: filterProps) {
     setFilterList(goFilter);
   }
 
-  function FilterInput(price: string, mileage: string) {
-    let filteredList = [...allAnnouncements];
-
-    if (price !== "") {
-      filteredList = filteredList.filter((element) => element.price.includes(price));
+  function FilterInputPrice(price: string) {
+    if (price === "") {
+      return setFilterList(allAnnouncements);
     }
 
-    if (mileage !== "") {
-      filteredList = filteredList.filter((element) => element.mileage.includes(mileage));
+    const goFilter = allAnnouncements.filter((element) =>
+      element.mileage.toLowerCase().includes(price.toLowerCase())
+    );
+
+    setFilterList(goFilter);
+  }
+
+  function FilterInputMileage(mileage: string) {
+    if (mileage === "") {
+      return setFilterList(allAnnouncements);
     }
 
-    setFilterList(filteredList);
+    const goFilter = allAnnouncements.filter((element) =>
+      element.mileage.toLowerCase().includes(mileage.toLowerCase())
+    );
+
+    setFilterList(goFilter);
   }
 
   function newIncludes(arr: string, item: string, startFrom = 0) {
     let res = false;
-    for (let i = startFrom; i < arr.length; i++) {
-      if (arr[i] === item) {
+      if (arr === item) {
         return (res = true);
       }
-    }
     return res;
   }
 
   return (
     <FilterContext.Provider
-      value={{ FilterInput, FilterBrand, FilterModel, FilterColor, FilterYear, FilterFuel }}>
+      value={{
+        FilterBrand,
+        FilterModel,
+        FilterColor,
+        FilterYear,
+        FilterFuel,
+        filterList,
+        setFilterList,
+        FilterInputPrice,
+        FilterInputMileage,
+        allAnnouncements,
+        setAllAnnouncements
+      }}>
       {children}
     </FilterContext.Provider>
   );
