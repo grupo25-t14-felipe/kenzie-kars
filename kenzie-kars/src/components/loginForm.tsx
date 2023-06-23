@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { useAuth } from "../contexts/authContext";
+import Link from "next/link";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -50,7 +51,9 @@ const LoginForm = () => {
           </div>
         </div>
         <div className="flex items-end justify-end">
-          <span className="body-2-500 text-grey-2">Esqueci minha senha</span>
+          <Link href={"/resetPassword"} className="body-2-500 text-grey-2">
+            esqueci minha senha
+          </Link>
         </div>
         <div className="W-full">
           <button type="submit" className="big-brand-1 w-full">
