@@ -1,4 +1,4 @@
-import { loginData } from "@/schemas/user.schema";
+import { ResetPasswordData, SendEmailResetPasswordData, loginData } from "@/schemas/user.schema";
 import api from "@/services/api";
 import { useRouter } from "next/router";
 import { parseCookies, setCookie } from "nookies";
@@ -18,14 +18,16 @@ interface authProviderData {
   router: any;
   token: any;
   setToken: any;
+  sendEmail: (sendEmailResetPasswordData: SendEmailResetPasswordData) => void;
+  resetPassword: (resetPasswordData: ResetPasswordData, token: string) => void;
 }
 export const AuthContext = createContext<authProviderData>({} as authProviderData);
 
 export const AuthProvider = ({ children }: loginProps) => {
   const router = useRouter();
   const [showModal, setModal] = useState(false);
-  const [token, setToken] = useState(parseCookies()['projetofinal.token']);
- 
+  const [token, setToken] = useState(parseCookies()["projetofinal.token"]);
+
   const registerSubmit = (userData: UserData) => {
     api
       .post("/users", userData)
@@ -40,12 +42,12 @@ export const AuthProvider = ({ children }: loginProps) => {
   const login = (loginData: loginData) => {
     api
       .post("/login", loginData)
-      .then( response => {
-        const { sub }: { sub: string } = jwtDecode(response.data.token)
-        
-        window.localStorage.setItem('@kenzie-kars-userId', sub)
+      .then((response) => {
+        const { sub }: { sub: string } = jwtDecode(response.data.token);
 
-        return response
+        window.localStorage.setItem("@kenzie-kars-userId", sub);
+
+        return response;
       })
       .then((response) => {
         setCookie(null, "projetofinal.token", response.data.token, {
@@ -62,11 +64,44 @@ export const AuthProvider = ({ children }: loginProps) => {
       })
       .catch((err) => {
         console.log(err);
-      }); 
+      });
+  };
+
+  const sendEmail = (sendEmailResetPasswordData: SendEmailResetPasswordData) => {
+    api
+      .post("/users/resetPassword", sendEmailResetPasswordData)
+      .then(() => {
+        router.push("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const resetPassword = (resetPasswordData: ResetPasswordData, token: string) => {
+    api
+      .patch(`/users/resetPassword/${token}`, { password: resetPasswordData.password })
+      .then(() => {
+        router.push("/login");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
-    <AuthContext.Provider value={{ login, registerSubmit, showModal, setModal, router, token, setToken }}>
+    <AuthContext.Provider
+      value={{
+        login,
+        registerSubmit,
+        showModal,
+        setModal,
+        router,
+        token,
+        setToken,
+        sendEmail,
+        resetPassword
+      }}>
       {children}
     </AuthContext.Provider>
   );
