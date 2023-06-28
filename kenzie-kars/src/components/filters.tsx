@@ -60,8 +60,20 @@ const Filters = () => {
     if (year != "") {
       list = list.filter((e) => e.year.toLowerCase() == year.toLowerCase());
     }
+    if (minKm != "") {
+      list = list.filter((e) => e.mileage == minKm);
+    }
+    if (maxKm != "") {
+      list = list.filter((e) => e.mileage == maxKm);
+    }
+    if (minPrice != "") {
+      list = list.filter((e) => e.price == minPrice);
+    }
+    if (maxPrice != "") {
+      list = list.filter((e) => e.price == maxPrice);
+    }
     setFilterList(list);
-  }, [brand, model, color, year]);
+  }, [brand, model, color, year, minKm, maxKm, minPrice, maxPrice]);
 
   useEffect(() => {
     const fetchBrands = async () => {
@@ -293,11 +305,15 @@ const Filters = () => {
           className="bg-grey-5 w-1/2 input-text text-center"
           type="text"
           placeholder="Mínima"
+          value={minKm}
+          onChange={(e) => setMinKm(e.target.value)}
         />
         <input
           className="bg-grey-5 w-1/2 input-text text-center"
           type="text"
           placeholder="Máxima"
+          value={maxKm}
+          onChange={(e) => setMaxKm(e.target.value)}
         />
       </div>
 
@@ -307,11 +323,15 @@ const Filters = () => {
           className="bg-grey-5 w-1/2 input-text text-center"
           type="text"
           placeholder="Mínimo"
+          value={minPrice}
+          onChange={(e) => setMinPrice(e.target.value)}
         />
         <input
           className="bg-grey-5 w-1/2 input-text text-center"
           type="text"
           placeholder="Máximo"
+          value={maxPrice}
+          onChange={(e) => setMaxPrice(e.target.value)}
         />
       </div>
       <button
