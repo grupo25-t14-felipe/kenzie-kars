@@ -1,8 +1,9 @@
 import { UpdateeAnnouncementSchema, iAnnouncement, iUpdateAnnouncementRequest } from "@/schemas/announcement.schema";
 import api from "@/services/api";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import trash from '../assets/trash.png';
 
 interface iUpdateAnnouncement {
   announcement: Omit<iAnnouncement, 'user'> | null
@@ -15,19 +16,70 @@ const UpdateAnnouncement = ({ announcement, setAnnouncement, setUpdateAnnounceme
     mode: 'onSubmit',
     resolver: zodResolver( UpdateeAnnouncementSchema )
   })
+  const [images, setImages] = useState<{id: string, link: string}[] | null>(null)
+  const [isPublished, setIsPublished] = useState(true);
 
-  const updateAnnouncement = async ( { mileage, color, price, description, cover_image }: iUpdateAnnouncementRequest ) => {
-    const updatedData = { ...announcement, ...{
-      mileage: Number(mileage) || Number(announcement?.mileage),
-      color: color || announcement?.color,
-      price: price || announcement?.price,
-      description: description || announcement?.description,
-      cover_image: cover_image || announcement?.cover_image,
-    }}
+  useEffect(() => {
+    if( announcement?.image !== undefined ){      
+      setImages( announcement.image )
+    }
+  }, [announcement])
+
+  const addFormImage = () => {
+    if( !images ){
+      setImages([ {
+        id: `id-0`,
+        link: '',
+      } ])
+
+      return
+    }
+
+    setImages([ ...images, {
+      id: `id-${images.length}`,
+      link: '',
+    } ])
     
-    await api.patch( `/announcements/${announcement?.id}`, updatedData)
-      .then( res => res)
-      .catch( err => err)
+    return
+  }
+
+  const updateAnnouncement = async ( { mileage, image, ...data}: iUpdateAnnouncementRequest ) => {
+    const updateData = { ...data, mileage: Number(mileage), published: isPublished};
+    
+    await api.patch( `/announcements/${announcement?.id}`, updateData)
+    
+    if( image ){
+      await image.forEach( async ({ id, link }) => {
+        id?.startsWith( 'id-' ) ?
+          await api.post( `/image/announcement/${announcement?.id}`, { link: link }).then( res => {
+            console.log(res);
+          }).catch( err => {
+            console.error(err);
+          })
+        :
+          await api.patch( `/image/${id}`, { link: link })
+      })
+    }
+
+    setUpdateAnnouncementModal(false)
+
+    return
+  }
+
+  const deleteImage = async ( id: string ) => {
+    return await api.delete( `/announcements/${announcement?.id}/image/${id}` ).then( res => {
+      if( images && images.length < 2 ) {
+        setImages( null )
+        return 
+      }
+  
+      const newImages: any = images!.map( data => {
+        if( data.id !== id ) return data
+      })
+  
+      setImages(newImages)
+      return
+    }).catch( err => err )
   }
 
   const deleteAnnouncement = async () => {
@@ -36,7 +88,7 @@ const UpdateAnnouncement = ({ announcement, setAnnouncement, setUpdateAnnounceme
   }
 
   return(
-    <div className="w-screen h-screen p-2 bg-grey-0/25 flex content-center fixed z-[21] top-0">
+    <div className="w-screen h-screen p-2 bg-grey-0/25 flex content-center fixed z-[21] top-0 cursor-default">
       <div className="min-w-[300px] max-w-[400px] p-2 m-auto bg-whiteFixed rounded-[4px]">
         <div className="mb-4 flex flex-row justify-between items-center">
           <h3 className="heading-6-500">Editar anúncio</h3>
@@ -102,7 +154,7 @@ const UpdateAnnouncement = ({ announcement, setAnnouncement, setUpdateAnnounceme
                 type="text" 
                 id="mileage" 
                 className="input-text w-full"
-                placeholder={ announcement?.mileage }
+                defaultValue={ announcement?.mileage }
                 {...register('mileage')}
                 required={false}
               />
@@ -114,7 +166,7 @@ const UpdateAnnouncement = ({ announcement, setAnnouncement, setUpdateAnnounceme
                 type="text" 
                 id="color" 
                 className="input-text w-full" 
-                placeholder={ announcement?.color }
+                defaultValue={ announcement?.color }
                 {...register('color')} 
                 required={false} 
               />
@@ -140,7 +192,7 @@ const UpdateAnnouncement = ({ announcement, setAnnouncement, setUpdateAnnounceme
                 type="text" 
                 id="price" 
                 className="input-text w-full" 
-                placeholder={ announcement?.price }
+                defaultValue={ announcement?.price }
                 {...register('price')} 
                 required={false}
               />
@@ -152,20 +204,83 @@ const UpdateAnnouncement = ({ announcement, setAnnouncement, setUpdateAnnounceme
             type="text" 
             id="description" 
             className="input-text" 
-            placeholder={ announcement?.description }
+            defaultValue={ announcement?.description }
             {...register('description')} 
             required={false}
           />
+
+          <label htmlFor="published" className="input-label">Publicado</label>
+          <div className="w-full flex row gap-[10px]">
+            <input 
+              type="button" 
+              id="published-0"
+              className="w-1/2 big-brand-1 cursor-pointer" 
+              onClick={(event) => {
+                const button0 = document.getElementById('published-0')
+                button0?.classList.remove('big-outline-2')
+                button0?.classList.add('big-brand-1')
+                
+                const button1 = document.getElementById('published-1')
+                button1?.classList.remove('big-brand-1')
+                button1?.classList.add('big-outline-2')
+                setIsPublished(true)
+              }}
+              value={"Sim"}
+              required={false}
+              />
+            <input 
+              type="button" 
+              id="published"
+              className="w-1/2 big-outline-2 cursor-pointer"
+              onClick={(event) => {
+                const button0 = document.getElementById('published-0')
+                button0?.classList.remove('big-brand-1')
+                button0?.classList.add('big-outline-2')
+                
+                const button1 = document.getElementById('published-1')
+                button1?.classList.remove('big-outline-2')
+                button1?.classList.add('big-brand-1')
+                setIsPublished(false)
+              }}
+              value={"Não"}
+              required={false}
+              />
+          </div>
           
           <label htmlFor="cover-image" className="input-label">Imagem da capa</label>
           <input 
             type="text" 
             id="cover-image" 
             className="input-text" 
-            placeholder={ announcement?.cover_image }
+            defaultValue={ announcement?.cover_image }
             {...register('cover_image')} 
             required={false}
           />
+
+          { images ? images.map(({ id, link }, index) => {
+            return(
+              <React.Fragment key={id}>
+                <label htmlFor={id} className="input-label">{index+1}º Imagem da galeria</label>
+                <div className="flex justify-between">
+                  <input 
+                    type="text" 
+                    id={id} 
+                    className="w-[-moz-available] input-text mb-2 text-ellipsis" 
+                    defaultValue={link}
+                    {...register(`image.${index}.id`, { value: id })}
+                    {...register(`image.${index}.link`)}
+                  />
+                  <button className="mb-[21px]" onClick={() => deleteImage(id)}>
+                    <img className="w-4/5 p-[8px] m-auto" src={trash.src} alt="Remover imagem" />
+                  </button>
+                </div>
+              </React.Fragment>
+            )
+          }) : <></> }
+
+          <button type="button" onClick={ addFormImage } className="medium-brand-opacity mb-5">
+            Adicionar campo para imagens da galeria
+          </button>
 
           <div className="flex row gap-[10px]">
             <div className="flex row gap-[10px]">

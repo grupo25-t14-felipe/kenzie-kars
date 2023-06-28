@@ -14,7 +14,6 @@ const LoginForm = () => {
   const { login } = useAuth();
 
   const onFormSubmit = (formData: loginData) => {
-    console.log(formData);
     login(formData);
   };
 

@@ -82,16 +82,18 @@ const RegisterAnnouncement = ({ setCreateAd, brands }: iRegisterAnnouncement) =>
     data['price_table_fipe'] = fipe;
     
     return await api.post( '/announcements', data ).then( async (res: any) => {
-      console.log(res);
       setModal(true);
       if( images ){
         await images.map( async (image: typeof CreateImageSchema) => {
-          await api.post( `/announcements/${res.data.id}/image`, image ).then( resImage => resImage )
+          await api.post( `/image/announcement/${res.data.id}`, image ).then( resImage => {
+            return resImage;            
+          })
         })
       }
 
       reset();
-    }).catch( err => { console.error(err) })
+      setCreateAd(false);
+    }).catch( err => { console.error(err.response.data) })
   }
 
   return (
