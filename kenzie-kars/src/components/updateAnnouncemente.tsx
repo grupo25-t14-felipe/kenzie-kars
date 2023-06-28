@@ -67,7 +67,7 @@ const UpdateAnnouncement = ({ announcement, setAnnouncement, setUpdateAnnounceme
   }
 
   const deleteImage = async ( id: string ) => {
-    return await api.delete( `/announcements/${announcement?.id}/image/${id}` ).then( res => {
+    return await api.delete( `/image/${id}` ).then( res => {
       if( images && images.length < 2 ) {
         setImages( null )
         return 
@@ -297,7 +297,7 @@ const UpdateAnnouncement = ({ announcement, setAnnouncement, setUpdateAnnounceme
               <button 
                 type="button" 
                 className="medium-alert"
-                onClick={ () => { deleteAnnouncement()}}
+                onClick={ async () => { await deleteAnnouncement()}}
               >
                 Exluir anúncio
               </button>
