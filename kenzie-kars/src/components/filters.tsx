@@ -1,6 +1,5 @@
 import { FilterContext } from "@/contexts/filterContext";
 import { useState, useContext, useEffect } from "react";
-import axios from "axios";
 import api from "@/services/api";
 
 interface iModel {
@@ -13,17 +12,7 @@ interface iModel {
 }
 
 const Filters = () => {
-  const {
-    FilterInputPrice,
-    FilterInputMileage,
-    FilterBrand,
-    FilterModel,
-    FilterColor,
-    FilterYear,
-    FilterFuel,
-    setFilterList,
-    allAnnouncements
-  } = useContext(FilterContext);
+  const { setFilterList, allAnnouncements } = useContext(FilterContext);
   const [brand, setBrand] = useState("");
   const [model, setModel] = useState<iModel | null>(null);
   const [color, setColor] = useState("");
@@ -58,6 +47,35 @@ const Filters = () => {
   };
 
   useEffect(() => {
+    let list = allAnnouncements;
+    if (brand != "") {
+      list = list.filter((e) => e.brand.toLowerCase() == brand.toLowerCase());
+    }
+    if (model != null) {
+      list = list.filter((e) => e.model == model.name);
+    }
+    if (color != "") {
+      list = list.filter((e) => e.color.toLowerCase() == color.toLowerCase());
+    }
+    if (year != "") {
+      list = list.filter((e) => e.year.toLowerCase() == year.toLowerCase());
+    }
+    if (minKm != "") {
+      list = list.filter((e) => e.mileage == minKm);
+    }
+    if (maxKm != "") {
+      list = list.filter((e) => e.mileage == maxKm);
+    }
+    if (minPrice != "") {
+      list = list.filter((e) => e.price == minPrice);
+    }
+    if (maxPrice != "") {
+      list = list.filter((e) => e.price == maxPrice);
+    }
+    setFilterList(list);
+  }, [brand, model, color, year, minKm, maxKm, minPrice, maxPrice]);
+
+  useEffect(() => {
     const fetchBrands = async () => {
       try {
         const response = await getBrands();
@@ -84,34 +102,6 @@ const Filters = () => {
     fetchModels();
   }, [brand]);
 
-  const handleFilterBrand = (brand: string) => {
-    FilterBrand(brand);
-  };
-
-  const handleFilterModel = (model: string) => {
-    FilterModel(model);
-  };
-
-  const handleFilterColor = (color: string) => {
-    FilterColor(color);
-  };
-
-  const handleFilterYear = (year: string) => {
-    FilterYear(year);
-  };
-
-  const handleFilterFuel = (fuel: string) => {
-    FilterFuel(fuel);
-  };
-
-  const handleInputPrice = (price: string) => {
-    FilterInputPrice(price);
-  };
-
-  const handleInputMileage = (mileage: string) => {
-    FilterInputMileage(mileage);
-  };
-
   return (
     <aside className="flex flex-col justify-start gap-4 sm:w-full md:w-[25%] p-8">
       <h3 className="font-semibold text-lg">Marca</h3>
@@ -124,10 +114,14 @@ const Filters = () => {
               brand === selectedBrand ? "selected" : "text-grey-2"
             }`}
             onClick={() => {
-              setBrand(brand);
-              setSelectedBrand(brand);
+              if (brand === selectedBrand) {
+                setBrand("");
+                setSelectedBrand("");
+              } else {
+                setBrand(brand);
+                setSelectedBrand(brand);
+              }
               setModel(null);
-              handleFilterBrand(brand);
             }}>
             {brand}
           </button>
@@ -147,14 +141,13 @@ const Filters = () => {
                     model && model.id === modelItem.id && "selected"
                   }`}
                   onClick={() => {
-                    setModel(modelItem);
-                    handleFilterModel(modelItem.name);
+                    model?.id === modelItem.id ? setModel(null) : setModel(modelItem);
                   }}>
                   {modelItem.name}
                 </button>
               );
             }
-            return null
+            return null;
           })}
       </div>
 
@@ -164,8 +157,7 @@ const Filters = () => {
           type="button"
           className={`text-sm text-grey-2 ${color === "Azul" && "selected"}`}
           onClick={(e) => {
-            setColor("Azul");
-            handleFilterColor(e.currentTarget.innerText.toString());
+            color === "Azul" ? setColor("") : setColor("Azul");
           }}>
           Azul
         </button>
@@ -173,8 +165,7 @@ const Filters = () => {
           type="button"
           className={`text-sm text-grey-2 ${color === "Branco" && "selected"}`}
           onClick={(e) => {
-            setColor("Branco");
-            handleFilterColor(e.currentTarget.innerText.toString());
+            color === "Branco" ? setColor("") : setColor("Branco");
           }}>
           Branco
         </button>
@@ -182,8 +173,7 @@ const Filters = () => {
           type="button"
           className={`text-sm text-grey-2 ${color === "Cinza" && "selected"}`}
           onClick={(e) => {
-            setColor("Cinza");
-            handleFilterColor(e.currentTarget.innerText.toString());
+            color === "Cinza" ? setColor("") : setColor("Cinza");
           }}>
           Cinza
         </button>
@@ -191,8 +181,7 @@ const Filters = () => {
           type="button"
           className={`text-sm text-grey-2 ${color === "Prata" && "selected"}`}
           onClick={(e) => {
-            setColor("Prata");
-            handleFilterColor(e.currentTarget.innerText.toString());
+            color === "Prata" ? setColor("") : setColor("Prata");
           }}>
           Prata
         </button>
@@ -200,8 +189,7 @@ const Filters = () => {
           type="button"
           className={`text-sm text-grey-2 ${color === "Preta" && "selected"}`}
           onClick={(e) => {
-            setColor("Preta");
-            handleFilterColor(e.currentTarget.innerText.toString());
+            color === "Preta" ? setColor("") : setColor("Preta");
           }}>
           Preta
         </button>
@@ -209,8 +197,7 @@ const Filters = () => {
           type="button"
           className={`text-sm text-grey-2 ${color === "Verde" && "selected"}`}
           onClick={(e) => {
-            setColor("Verde");
-            handleFilterColor(e.currentTarget.innerText.toString());
+            color === "Verde" ? setColor("") : setColor("Verde");
           }}>
           Verde
         </button>
@@ -222,8 +209,7 @@ const Filters = () => {
           type="button"
           className={`text-sm text-grey-2 ${year === "2022" && "selected"}`}
           onClick={(e) => {
-            setYear("2022");
-            handleFilterYear(e.currentTarget.innerText.toString());
+            year === "2022" ? setYear("") : setYear("2022");
           }}>
           2022
         </button>
@@ -231,8 +217,7 @@ const Filters = () => {
           type="button"
           className={`text-sm text-grey-2 ${year === "2021" && "selected"}`}
           onClick={(e) => {
-            setYear("2021");
-            handleFilterYear(e.currentTarget.innerText.toString());
+            year === "2021" ? setYear("") : setYear("2021");
           }}>
           2021
         </button>
@@ -240,8 +225,7 @@ const Filters = () => {
           type="button"
           className={`text-sm text-grey-2 ${year === "2018" && "selected"}`}
           onClick={(e) => {
-            setYear("2018");
-            handleFilterYear(e.currentTarget.innerText.toString());
+            year === "2018" ? setYear("") : setYear("2018");
           }}>
           2018
         </button>
@@ -249,8 +233,7 @@ const Filters = () => {
           type="button"
           className={`text-sm text-grey-2 ${year === "2015" && "selected"}`}
           onClick={(e) => {
-            setYear("2015");
-            handleFilterYear(e.currentTarget.innerText.toString());
+            year === "2015" ? setYear("") : setYear("2015");
           }}>
           2015
         </button>
@@ -258,8 +241,7 @@ const Filters = () => {
           type="button"
           className={`text-sm text-grey-2 ${year === "2013" && "selected"}`}
           onClick={(e) => {
-            setYear("2013");
-            handleFilterYear(e.currentTarget.innerText.toString());
+            year === "2013" ? setYear("") : setYear("2013");
           }}>
           2013
         </button>
@@ -267,8 +249,7 @@ const Filters = () => {
           type="button"
           className={`text-sm text-grey-2 ${year === "2012" && "selected"}`}
           onClick={(e) => {
-            setYear("2012");
-            handleFilterYear(e.currentTarget.innerText.toString());
+            year === "2012" ? setYear("") : setYear("2012");
           }}>
           2012
         </button>
@@ -276,8 +257,7 @@ const Filters = () => {
           type="button"
           className={`text-sm text-grey-2 ${year === "2010" && "selected"}`}
           onClick={(e) => {
-            setYear("2010");
-            handleFilterYear(e.currentTarget.innerText.toString());
+            year === "2010" ? setYear("") : setYear("2010");
           }}>
           2010
         </button>
@@ -290,7 +270,6 @@ const Filters = () => {
           className={`text-sm text-grey-2 ${fuel === "Diesel" && "selected"}`}
           onClick={(e) => {
             setFuel("Diesel");
-            handleFilterFuel(e.currentTarget.innerText.toString());
           }}>
           Diesel
         </button>
@@ -299,7 +278,6 @@ const Filters = () => {
           className={`text-sm text-grey-2 ${fuel === "Gasolina" && "selected"}`}
           onClick={(e) => {
             setFuel("Gasolina");
-            handleFilterFuel(e.currentTarget.innerText.toString());
           }}>
           Gasolina
         </button>
@@ -308,7 +286,6 @@ const Filters = () => {
           className={`text-sm text-grey-2 ${fuel === "Etanol" && "selected"}`}
           onClick={(e) => {
             setFuel("Etanol");
-            handleFilterFuel(e.currentTarget.innerText.toString());
           }}>
           Etanol
         </button>
@@ -317,7 +294,6 @@ const Filters = () => {
           className={`text-sm text-grey-2 ${fuel === "Flex" && "selected"}`}
           onClick={(e) => {
             setFuel("Flex");
-            handleFilterFuel(e.currentTarget.innerText.toString());
           }}>
           Flex
         </button>
@@ -329,13 +305,15 @@ const Filters = () => {
           className="bg-grey-5 w-1/2 input-text text-center"
           type="text"
           placeholder="Mínima"
-          onChange={(e) => handleInputMileage(e.target.value)}
+          value={minKm}
+          onChange={(e) => setMinKm(e.target.value)}
         />
         <input
           className="bg-grey-5 w-1/2 input-text text-center"
           type="text"
           placeholder="Máxima"
-          onChange={(e) => handleInputMileage(e.target.value)}
+          value={maxKm}
+          onChange={(e) => setMaxKm(e.target.value)}
         />
       </div>
 
@@ -345,16 +323,21 @@ const Filters = () => {
           className="bg-grey-5 w-1/2 input-text text-center"
           type="text"
           placeholder="Mínimo"
-          onChange={(e) => handleInputPrice(e.target.value)}
+          value={minPrice}
+          onChange={(e) => setMinPrice(e.target.value)}
         />
         <input
           className="bg-grey-5 w-1/2 input-text text-center"
           type="text"
           placeholder="Máximo"
-          onChange={(e) => handleInputPrice(e.target.value)}
+          value={maxPrice}
+          onChange={(e) => setMaxPrice(e.target.value)}
         />
       </div>
-      <button className="mt-8 medium-brand-1" type="button" onClick={() => setFilterList([])}>
+      <button
+        className="mt-8 medium-brand-1"
+        type="button"
+        onClick={() => setFilterList(allAnnouncements)}>
         Limpar Filtros
       </button>
     </aside>

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { imageResponseSchema } from "./image.schema";
 
 const announcementSchema = z.object({
   brand: z.string(),
@@ -11,7 +12,8 @@ const announcementSchema = z.object({
   price: z.string(),
   description: z.string(),
   published: z.boolean(),
-  cover_image: z.string()
+  cover_image: z.string(),
+  image: imageResponseSchema.array().optional()
 });
 
 export const createAnnouncementSchema = announcementSchema.extend({
@@ -74,6 +76,7 @@ export const UpdateeAnnouncementSchema = z.object({
   price: z.string(),
   description: z.string(),
   cover_image: z.string(),
+  image: imageResponseSchema.partial().array()
 }).partial()
 
 export type iUserAnnouncements = z.infer<typeof UserAnnouncementsSchema>;

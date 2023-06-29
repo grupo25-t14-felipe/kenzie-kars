@@ -113,6 +113,7 @@ export default function Profile({ userAnnouncements }: ProfileProps) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const userId = context.params?.id;
   const response = await api.get<iUserAnnouncements>(`/users/${userId}`);
+  
   return {
     props: { userAnnouncements: response.data }
   };

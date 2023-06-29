@@ -108,12 +108,15 @@ const RegisterAnnouncement = ({ setCreateAd, brands, setAnnouncements }: iRegist
       setModal(true);
       if( images ){
         await images.map( async (image: typeof CreateImageSchema) => {
-          await api.post( `/announcements/${res.data.id}/image`, image ).then( resImage => resImage )
+          await api.post( `/image/announcement/${res.data.id}`, image ).then( resImage => {
+            return resImage;            
+          })
         })
       }
 
       reset();
-    }).catch( err => { console.error(err) })
+      setCreateAd(false);
+    }).catch( err => { console.error(err.response.data) })
   }
 
   return (
