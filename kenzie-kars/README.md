@@ -1,38 +1,58 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+KenzieKars
+Projeto desenvolvido durante o Módulo 6 da Turma 14 do curso de Desenvolvimento Full Stack da Kenzie Academy Brasil. A aplicação é um site ecommerce de veículos, que usa dos recursos da API para que usuários possam encontrar anúncios de veículos e realizar a compra, bem como permite aos usuários anúnciantes oferecer seus produtos para a venda.
 
-## Getting Started
 
-First, run the development server:
+🚀 Começando
+Este é um projeto Next.js inicializado com create-next-app.
 
-```bash
+Primeiros Passos
+Primeiramente, execute o servidor de desenvolvimento:
+
 npm run dev
-# or
+# ou
 yarn dev
-# or
+# ou
 pnpm dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abra http://localhost:3000 no seu navegador para ver o resultado.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Você pode começar a editar a página modificando o arquivo pages/index.tsx. A página será atualizada automaticamente conforme você edita o arquivo.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+As rotas de API podem ser acessadas em http://localhost:3000/api/hello. Este endpoint pode ser editado em pages/api/hello.ts.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+O diretório pages/api é mapeado para /api/*. Arquivos neste diretório são tratados como rotas de API ao invés de páginas React.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Este projeto utiliza next/font para otimizar e carregar automaticamente a fonte Inter, uma fonte personalizada do Google.
 
-## Learn More
+Saiba Mais
 
-To learn more about Next.js, take a look at the following resources:
+Para aprender mais sobre o Next.js, consulte os seguintes recursos:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Documentação do Next.js - saiba mais sobre os recursos e a API do Next.js.
+Aprenda Next.js - um tutorial interativo do Next.js.
+Você pode conferir o repositório GitHub do Next.js - seu feedback e contribuições são bem-vindos!
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+📢 Layout
+O layout da aplicação está disponível no figma:
+https://www.figma.com/file/KX3C3fIi8zmCRpNipxIYYF/M6---E-Commerce-Filter?type=design&node-id=45-2&mode=design&t=gIhbJyleMgmFi9lk-0
 
-## Deploy on Vercel
+🔧 Link de Acesso a Aplicação
+kenzie-kars-topaz.vercel.app
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+🛠️ Construído com
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Next.js
+TypeScript
+Tailwind CSS
+
+📌 Versão
+1.0.0
+
+✒️ Autores
+Gabriel de Lima Santana
+José Orlando de Carvalho Júnior
+Leonardo Miranda
+Ygor Rupp
+
+📄 Licença
+Este projeto é Open Source para fins educacionais e não comerciais, Tipo de Licença - MIT
