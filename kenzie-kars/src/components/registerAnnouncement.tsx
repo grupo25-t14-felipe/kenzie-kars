@@ -1,10 +1,11 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import api from "@/services/api";
 import { useAuth } from "@/contexts/authContext";
+import jwt_decode from "jwt-decode";
 
 interface iModel {
   id: string
@@ -18,6 +19,21 @@ interface iModel {
 interface iRegisterAnnouncement {
   setCreateAd: Dispatch<SetStateAction<boolean>>,
   brands: string[] | undefined
+  setAnnouncements: Dispatch<SetStateAction<{
+    brand: string;
+    model: string;
+    year: string;
+    fuel: string;
+    mileage: string;
+    color: string;
+    price_table_fipe: string;
+    price: string;
+    description: string;
+    cover_image: string;
+    published: boolean;
+    id: string;
+    createdAt: string;
+}[]>>
 }
 
 interface iImageGalery {
@@ -52,8 +68,8 @@ export const getModels = async ( brand: string ) => {
   return axios.get(`https://kenzie-kars.herokuapp.com/cars?brand=${brand}`).then( res => res.data).catch( err => err )
 }
 
-const RegisterAnnouncement = ({ setCreateAd, brands }: iRegisterAnnouncement) => {
-  const { setModal } = useAuth();
+const RegisterAnnouncement = ({ setCreateAd, brands, setAnnouncements }: iRegisterAnnouncement) => {
+  const { setModal, token } = useAuth();
   const { register, handleSubmit, reset, formState:{ errors }, setValue } = useForm({
     mode: 'onSubmit',
     resolver: zodResolver( CreateAnnouncementSchema )
@@ -81,7 +97,14 @@ const RegisterAnnouncement = ({ setCreateAd, brands }: iRegisterAnnouncement) =>
     data['fuel'] = +fuel;
     data['price_table_fipe'] = fipe;
     
-    return await api.post( '/announcements', data ).then( async (res: any) => {
+    return await api.post( '/announcements', data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).then( async (res: any) => {
+      res = await api.get(`/users/${jwt_decode<any>(token).sub}`)
+      setAnnouncements(res.data.announcement)
+      setCreateAd(false)
       setModal(true);
       if( images ){
         await images.map( async (image: typeof CreateImageSchema) => {
@@ -113,31 +136,43 @@ const RegisterAnnouncement = ({ setCreateAd, brands }: iRegisterAnnouncement) =>
           <select 
             className="p-2.5 mb-2.5"
             {...register('brand')}
+            onChange={(e)=>{setSearchBrand(e.target.value)
+            }}
           >
             <option value=''>Selecione um marca</option>
             {
               brands?.map( brand => {
                 return(
-                  <>
-                    <option onClick={() => setSearchBrand( brand )} value={brand}>{ brand }</option>
-                  </>
+                <option value={brand}>{ brand }</option>
                 )
               })
             }
           </select>
-          
           <label htmlFor="model" className="input-label">Modelo</label>
           <select 
             className="p-2.5 mb-2.5"
             {...register('model')}
             onClick={async (event) => {
               event.preventDefault()
+              
               const allModelsRequest = await getModels( searchBrand ).then( res => res ).catch( err => 'Deve escolher a marca primeiro')
+
               setAllModels( allModelsRequest )
 
               const res = allModelsRequest.map( (model: any) => model.name )
 
               setModels( res )
+            }}
+            onChange={(e)=>{
+              setSearchModel(e.target.value)
+              let model: iModel
+                  for( model of allModels ){
+                    if( model.name == e.target.value ){
+                      setYear( `${model.year}` )
+                      setFuel( `${model.fuel}` )
+                      setFipe( `${model.value}` )
+                    }
+                  }
             }}
           >
             <option value=''>Selecione um modelo</option>
@@ -147,9 +182,6 @@ const RegisterAnnouncement = ({ setCreateAd, brands }: iRegisterAnnouncement) =>
                   <>
                     <option 
                       value={model}
-                      onClick={() => {
-                        setSearchModel( model )
-                      }}
                     >{ model }</option>
                   </>
                 )
@@ -188,16 +220,6 @@ const RegisterAnnouncement = ({ setCreateAd, brands }: iRegisterAnnouncement) =>
                 className="input-text w-full" 
                 placeholder="Quilometragem" 
                 {...register('mileage')} 
-                onClick={() => {
-                  let model: iModel
-                  for( model of allModels ){
-                    if( model.name == searchModel ){
-                      setYear( `${model.year}` )
-                      setFuel( `${model.fuel}` )
-                      setFipe( `${model.value}` )
-                    }
-                  }
-                }}
                 required 
               />
               <span></span>

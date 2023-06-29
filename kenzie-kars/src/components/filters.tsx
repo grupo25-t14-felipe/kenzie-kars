@@ -110,7 +110,7 @@ const Filters = () => {
           <button
             key={""}
             type="button"
-            className={`text-sm text-grey-2 ${
+            className={`text-sm text-grey-2 max-w-max ${
               brand === selectedBrand ? "selected" : "text-grey-2"
             }`}
             onClick={() => {
