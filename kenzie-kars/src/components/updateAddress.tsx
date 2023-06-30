@@ -29,7 +29,7 @@ const UpdateAddress = ({ setUpdateAddressModal, address, setAddress }: iUpdateAd
     
     const userId = window.localStorage.getItem( '@kenzie-kars-userId' )
     
-    return await api.patch( `/users/${userId}/address/${address?.id}`, data).then( (res) => {
+    return await api.patch( `/address/${address?.id}`, data).then( (res) => {
       const dataUpdated = AddressResponseSchema.parse( res.data )
       setAddress( dataUpdated )
       

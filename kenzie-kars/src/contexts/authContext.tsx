@@ -32,17 +32,11 @@ export const AuthProvider = ({ children }: loginProps) => {
     return await api
       .post("/users", userData)
       .then(async (resUser) => {
-        await api.post(`/users/${resUser.data.id}/address`, address)
+        await api.post(`/address/user/${resUser.data.id}`, address)
           .then((res) => {
-            console.log('address: ', res.data);
-            
             setModal(true);
-          }).catch((err)=> {
-            console.log(err);
-          })
-      }).catch((err) => {
-        console.log(err);
-      });
+          }).catch( err => err )
+      }).catch( err => err );
   };
 
   const login = (loginData: loginData) => {
