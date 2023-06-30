@@ -28,13 +28,19 @@ export const AuthProvider = ({ children }: loginProps) => {
   const [showModal, setModal] = useState(false);
   const [token, setToken] = useState(parseCookies()["projetofinal.token"]);
 
-  const registerSubmit = (userData: UserData) => {
-    api
+  const registerSubmit = async ({address, ...userData}: UserData) => {
+    return await api
       .post("/users", userData)
-      .then(() => {
-        setModal(true);
-      })
-      .catch((err) => {
+      .then(async (resUser) => {
+        await api.post(`/users/${resUser.data.id}/address`, address)
+          .then((res) => {
+            console.log('address: ', res.data);
+            
+            setModal(true);
+          }).catch((err)=> {
+            console.log(err);
+          })
+      }).catch((err) => {
         console.log(err);
       });
   };
