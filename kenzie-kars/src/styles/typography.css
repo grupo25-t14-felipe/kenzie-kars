@@ -1,0 +1,124 @@
+@tailwind components;
+
+@layer components {
+    .heading-1-700 {
+        font-style: normal;
+        font-weight: 700;
+        font-size: 44px;
+    }
+
+    .heading-2-600 {
+        font-style: normal;
+        font-weight: 600;
+        font-size: 36px;
+    }
+
+    .heading-3-600 {
+        font-style: normal;
+        font-weight: 600;
+        font-size: 32px;
+    }
+
+    .heading-3-500 {
+        font-style: normal;
+        font-weight: 500;
+        font-size: 32px;
+    }
+
+    .heading-4-600 {
+        font-style: normal;
+        font-weight: 600;
+        font-size: 28px;
+    }
+
+    .heading-4-500 {
+        font-style: normal;
+        font-weight: 500;
+        font-size: 28px;
+    }
+
+    .heading-5-600 {
+        font-style: normal;
+        font-weight: 600;
+        font-size: 24px;
+    }
+
+    .heading-5-500 {
+        font-style: normal;
+        font-weight: 500;
+        font-size: 24px;
+    }
+
+    .heading-6-600 {
+        font-style: normal;
+        font-weight: 600;
+        font-size: 20px;
+    }
+
+    .heading-6-500 {
+        font-style: normal;
+        font-weight: 500;
+        font-size: 20px;
+    }
+
+    .heading-7-600 {
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+    }
+
+    .heading-7-500 {
+        font-style: normal;
+        font-weight: 500;
+        font-size: 16px;
+    }
+
+    .body-1-600 {
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+    }
+
+    .body-1-400 {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+    }
+
+    .body-2-500 {
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+    }
+
+    .body-2-400 {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+    }
+
+    .button-big-text {
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+    }
+
+    .button-medium-text {
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .input-placeholder::placeholder{
+        color:red;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+    }
+
+    .input-label {
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+    }
+}
