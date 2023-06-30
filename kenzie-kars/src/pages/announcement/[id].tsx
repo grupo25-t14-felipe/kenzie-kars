@@ -185,21 +185,21 @@ export default function Announcement({ announcement }: ProfileProps) {
                   <div className="flex flex-wrap gap-4">
                     <span
                       onClick={() => {
-                        setValue("commentary", "Gostei muito!");
+                        setValue("description", "Gostei muito!");
                       }}
                       className="bg-grey-7 text-grey-4 max-w-max py-1 px-4 rounded-2xl text-[12px] font-semibold cursor-pointer">
                       Gostei muito!
                     </span>
                     <span
                       onClick={() => {
-                        setValue("commentary", "Incrível!");
+                        setValue("description", "Incrível!");
                       }}
                       className="bg-grey-7 text-grey-4 max-w-max py-1 px-4 rounded-2xl text-[12px] font-semibold cursor-pointer">
                       Incrível
                     </span>
                     <span
                       onClick={() => {
-                        setValue("commentary", "Recomendarei para meus amigos!");
+                        setValue("description", "Recomendarei para meus amigos!");
                       }}
                       className="bg-grey-7 text-grey-4 max-w-max py-1 px-4 rounded-2xl text-[12px] font-semibold cursor-pointer">
                       Recomendarei para meus amigos!
