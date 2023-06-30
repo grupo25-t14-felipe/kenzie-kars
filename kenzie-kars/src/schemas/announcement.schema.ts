@@ -62,12 +62,24 @@ const createUserSchema = userSchema
     password: true
   });
 
+  const commentSchema = z.object({
+    description: z.string(),
+  });
+  
+  const createCommentSchema = commentSchema.extend({
+    id: z.string(),
+    createdAt: z.date(),
+    user: createUserSchema
+  });
+
 const UserAnnouncementsSchema = createUserSchema.extend({
   announcement: returnAnnouncementSchemaAll
 });
 
+
 const returnAnnouncementSchema = createAnnouncementSchema.extend({
-  user: createUserSchema
+  user: createUserSchema,
+  comment: createCommentSchema.array()
 });
 
 export const UpdateeAnnouncementSchema = z.object({
@@ -83,3 +95,4 @@ export type iUserAnnouncements = z.infer<typeof UserAnnouncementsSchema>;
 export type iAllAnnouncements = z.infer<typeof returnAnnouncementSchemaAll>;
 export type iAnnouncement = z.infer<typeof returnAnnouncementSchema>;
 export type iUpdateAnnouncementRequest = z.infer<typeof UpdateeAnnouncementSchema>;
+export type iComment = z.infer<typeof commentSchema>;

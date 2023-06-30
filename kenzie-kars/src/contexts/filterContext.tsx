@@ -1,6 +1,7 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
 import api from "@/services/api";
 import { iAnnouncement } from "@/schemas/announcement.schema";
+import { useAuth } from "./authContext";
 
 interface filterProps {
   children: ReactNode;
@@ -23,6 +24,7 @@ interface IFilterContext {
 export const FilterContext = createContext<IFilterContext>({} as IFilterContext);
 
 export function FilterProvider({ children }: filterProps) {
+  const { router} = useAuth();
   const [allAnnouncements, setAllAnnouncements] = useState<iAnnouncement[]>([]);
   const [filterList, setFilterList] = useState<iAnnouncement[]>([]);
 
@@ -36,7 +38,7 @@ export function FilterProvider({ children }: filterProps) {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [router.asPath]);
 
   function FilterBrand(brand: string) {
     const goFilter = filterList.filter((element) => {

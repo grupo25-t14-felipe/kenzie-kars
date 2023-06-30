@@ -1,8 +1,8 @@
 import { ResetPasswordData, SendEmailResetPasswordData, loginData } from "@/schemas/user.schema";
 import api from "@/services/api";
-import { useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 import { parseCookies, setCookie } from "nookies";
-import { ReactNode, createContext, useContext, useState } from "react";
+import { ReactNode, createContext, use, useContext, useEffect, useState } from "react";
 import { UserData } from "@/schemas/user.schema";
 import jwtDecode from "jwt-decode";
 
@@ -15,18 +15,27 @@ interface authProviderData {
   registerSubmit: (userData: UserData) => void;
   showModal: boolean;
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
-  router: any;
+  router: NextRouter
   token: any;
-  setToken: any;
+  setToken: React.Dispatch<React.SetStateAction<any>>
   sendEmail: (sendEmailResetPasswordData: SendEmailResetPasswordData) => void;
   resetPassword: (resetPasswordData: ResetPasswordData, token: string) => void;
+  username: string ;
+  setUsername: React.Dispatch<React.SetStateAction<string>>
 }
 export const AuthContext = createContext<authProviderData>({} as authProviderData);
 
 export const AuthProvider = ({ children }: loginProps) => {
   const router = useRouter();
   const [showModal, setModal] = useState(false);
-  const [token, setToken] = useState(parseCookies()["projetofinal.token"]);
+  const [token, setToken] = useState("");
+  const [username, setUsername] = useState("");
+
+  useEffect(()=>{
+    const token = parseCookies()["projetofinal.token"]
+    setToken(token)
+    setUsername(`${token && jwtDecode<any>(token).userName}`)
+  },[])
 
   const registerSubmit = (userData: UserData) => {
     api
@@ -43,8 +52,8 @@ export const AuthProvider = ({ children }: loginProps) => {
     api
       .post("/login", loginData)
       .then((response) => {
-        const { sub }: { sub: string } = jwtDecode(response.data.token);
-
+        const { sub, userName }: { sub: string, userName: string } = jwtDecode(response.data.token);
+        setUsername(userName)
         window.localStorage.setItem("@kenzie-kars-userId", sub);
 
         return response;
@@ -100,7 +109,9 @@ export const AuthProvider = ({ children }: loginProps) => {
         token,
         setToken,
         sendEmail,
-        resetPassword
+        resetPassword,
+        username, 
+        setUsername
       }}>
       {children}
     </AuthContext.Provider>

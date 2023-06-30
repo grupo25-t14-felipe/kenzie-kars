@@ -2,8 +2,11 @@ import { iUserResponse, iUserUpdate, userUpdateSchema } from "@/schemas/user.sch
 import api from "@/services/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/router";
+import { parseCookies } from "nookies";
 import { Dispatch, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
+import jwt_decode from "jwt-decode";
+import { useAuth } from "@/contexts/authContext";
 
 /* O QUE PRECISA PARA ABRIR O COMPONENTE
 
@@ -45,7 +48,7 @@ interface iEditProfile {
 }
 
 const EditProfile = ({ setEditProfileModal, userData, setUserData  }: iEditProfile) => {
-  const router = useRouter();
+  const { router, setUsername} = useAuth();
   const { register, handleSubmit, formState:{ errors }, reset } = useForm({
     mode: "onSubmit",
     resolver: zodResolver( userUpdateSchema )
@@ -67,6 +70,7 @@ const EditProfile = ({ setEditProfileModal, userData, setUserData  }: iEditProfi
 
     reset()
     setEditProfileModal(false)
+    name && setUsername(name)
   }
 
   const deleteAccount = async () => {

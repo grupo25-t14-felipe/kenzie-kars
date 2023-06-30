@@ -15,7 +15,7 @@ import UpdateAddress from "./updateAddress";
 import { AddressResponseSchema, iAddressResponse } from "@/schemas/address.schema";
 
 const Header = () => {
-  const { router, token, setToken } = useAuth();
+  const { router, token, setToken, username} = useAuth();
   const [menu, setMenu] = useState(false);
   const [windowWidth, setWindowWidth] = useState<number>(0);
   const [editProfileModal, setEditProfileModal] = useState(false);
@@ -167,7 +167,7 @@ const Header = () => {
           <nav className=" w-80 flex justify-around items-center h-20 border-l border-grey-4 relative">
             {token ? (
               <ProfileIcon
-                name={token && jwt_decode<any>(token).userName}
+                name={username}
                 onClick={() => {
                   setMenu(!menu);
                 }}
