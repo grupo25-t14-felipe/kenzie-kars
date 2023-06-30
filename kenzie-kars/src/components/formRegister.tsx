@@ -17,13 +17,12 @@ const RegisterForm = () => {
   const { registerSubmit, showModal, setModal } = useAuth();
   const [isBuyer, setIsBuyer] = useState(false);
 
-  const onSubmit = (data: UserData) => {
-    console.log(data);
+  const onSubmit = async ({address, ...user}: UserData) => {
     const userData = {
-      ...data,
+      ...user,
       buyer: isBuyer
     };
-    registerSubmit(userData);
+    registerSubmit({ address: address, ...userData });
   };
 
   return (
@@ -126,7 +125,7 @@ const RegisterForm = () => {
               CEP
             </label>
             <div className="mt-2">
-              <input type="text" placeholder="00000.000" className="input-text w-full" />
+              <input type="text" placeholder="00000.000" className="input-text w-full" {...register('address.cep')} />
             </div>
           </div>
           <div className="w-full flex justify-between">
@@ -135,7 +134,7 @@ const RegisterForm = () => {
                 Estado
               </label>
               <div className="mt-2">
-                <input type="text" placeholder="Digitar Estado" className="input-text w-[90%]" />
+                <input type="text" placeholder="Digitar Estado" className="input-text w-[90%]" {...register('address.state')} />
               </div>
             </div>
             <div>
@@ -143,7 +142,7 @@ const RegisterForm = () => {
                 Cidade
               </label>
               <div className="mt-2">
-                <input type="text" placeholder="Digitar cidade" className="input-text w-[90%]" />
+                <input type="text" placeholder="Digitar cidade" className="input-text w-[90%]" {...register('address.city')} />
               </div>
             </div>
           </div>
@@ -152,7 +151,7 @@ const RegisterForm = () => {
               Rua
             </label>
             <div className="mt-2">
-              <input type="text" placeholder="Digite sua rua" className="input-text w-full" />
+              <input type="text" placeholder="Digite sua rua" className="input-text w-full" {...register('address.street')} />
             </div>
           </div>
           <div className="w-full flex justify-between">
@@ -161,7 +160,7 @@ const RegisterForm = () => {
                 Número
               </label>
               <div className="mt-2">
-                <input type="text" placeholder="Digite o número" className="input-text w-[90%]" />
+                <input type="text" placeholder="Digite o número" className="input-text w-[90%]" {...register('address.number')} />
               </div>
             </div>
             <div>
@@ -173,6 +172,7 @@ const RegisterForm = () => {
                   type="text"
                   placeholder="Ex: Apartamento 01"
                   className="input-text w-[90%]"
+                  {...register('address.complement')} 
                 />
               </div>
             </div>

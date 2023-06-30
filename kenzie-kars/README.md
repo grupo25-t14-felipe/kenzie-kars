@@ -37,7 +37,7 @@ O layout da aplicação está disponível no figma:
 https://www.figma.com/file/KX3C3fIi8zmCRpNipxIYYF/M6---E-Commerce-Filter?type=design&node-id=45-2&mode=design&t=gIhbJyleMgmFi9lk-0
 
 🔧 Link de Acesso a Aplicação
-kenzie-kars-topaz.vercel.app
+
 
 🛠️ Construído com
 

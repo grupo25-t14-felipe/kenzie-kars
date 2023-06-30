@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { createAnnouncementSchema } from "./announcement.schema";
+import { createAddressSchema } from "./address.schema";
 
 const userRequestSchema = z.object({
   name: z.string().nonempty("Campo obrigatório!"),
@@ -12,10 +13,12 @@ const userRequestSchema = z.object({
   description: z.string()
 });
 
-export const userSchema = userRequestSchema.refine((data) => data.password === data.confirm, {
+export const userSchema = userRequestSchema.extend({
+  address: createAddressSchema
+}).refine((data) => data.password === data.confirm, {
   message: "As senhas não são iguais!",
   path: ["confirm"]
-});
+})
 
 export const loginSchema = z.object({
   email: z.string().email("deve ser um email valido"),

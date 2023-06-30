@@ -37,15 +37,15 @@ export const AuthProvider = ({ children }: loginProps) => {
     setUsername(`${token && jwtDecode<any>(token).userName}`)
   },[])
 
-  const registerSubmit = (userData: UserData) => {
-    api
+  const registerSubmit = async ({address, ...userData}: UserData) => {
+    return await api
       .post("/users", userData)
-      .then(() => {
-        setModal(true);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      .then(async (resUser) => {
+        await api.post(`/address/user/${resUser.data.id}`, address)
+          .then((res) => {
+            setModal(true);
+          }).catch( err => err )
+      }).catch( err => err );
   };
 
   const login = (loginData: loginData) => {
