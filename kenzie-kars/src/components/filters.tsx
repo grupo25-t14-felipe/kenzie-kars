@@ -79,7 +79,6 @@ const Filters = () => {
     const fetchBrands = async () => {
       try {
         const response = await getBrands();
-        console.log(response);
         setBrands(response);
       } catch (error) {
         console.log(error);
@@ -108,7 +107,7 @@ const Filters = () => {
       <div className="flex flex-col gap-1 justify-start w-full pr-[200px]">
         {brands.map((brand: any) => (
           <button
-            key={""}
+            key={brand}
             type="button"
             className={`text-sm text-grey-2 max-w-max ${
               brand === selectedBrand ? "selected" : "text-grey-2"
@@ -137,7 +136,7 @@ const Filters = () => {
                 <button
                   key={modelItem.id}
                   type="button"
-                  className={`text-sm text-grey-2 ${
+                  className={`text-sm text-grey-2 max-w-max ${
                     model && model.id === modelItem.id && "selected"
                   }`}
                   onClick={() => {
@@ -155,7 +154,7 @@ const Filters = () => {
       <div className="flex flex-col pr-[250px]">
         <button
           type="button"
-          className={`text-sm text-grey-2 ${color === "Azul" && "selected"}`}
+          className={`text-sm text-grey-2 max-w-max ${color === "Azul" && "selected"}`}
           onClick={(e) => {
             color === "Azul" ? setColor("") : setColor("Azul");
           }}>
@@ -163,7 +162,7 @@ const Filters = () => {
         </button>
         <button
           type="button"
-          className={`text-sm text-grey-2 ${color === "Branco" && "selected"}`}
+          className={`text-sm text-grey-2 max-w-max ${color === "Branco" && "selected"}`}
           onClick={(e) => {
             color === "Branco" ? setColor("") : setColor("Branco");
           }}>
@@ -171,7 +170,7 @@ const Filters = () => {
         </button>
         <button
           type="button"
-          className={`text-sm text-grey-2 ${color === "Cinza" && "selected"}`}
+          className={`text-sm text-grey-2 max-w-max ${color === "Cinza" && "selected"}`}
           onClick={(e) => {
             color === "Cinza" ? setColor("") : setColor("Cinza");
           }}>
@@ -179,7 +178,7 @@ const Filters = () => {
         </button>
         <button
           type="button"
-          className={`text-sm text-grey-2 ${color === "Prata" && "selected"}`}
+          className={`text-sm text-grey-2 max-w-max ${color === "Prata" && "selected"}`}
           onClick={(e) => {
             color === "Prata" ? setColor("") : setColor("Prata");
           }}>
@@ -187,7 +186,7 @@ const Filters = () => {
         </button>
         <button
           type="button"
-          className={`text-sm text-grey-2 ${color === "Preta" && "selected"}`}
+          className={`text-sm text-grey-2 max-w-max ${color === "Preta" && "selected"}`}
           onClick={(e) => {
             color === "Preta" ? setColor("") : setColor("Preta");
           }}>
@@ -195,7 +194,7 @@ const Filters = () => {
         </button>
         <button
           type="button"
-          className={`text-sm text-grey-2 ${color === "Verde" && "selected"}`}
+          className={`text-sm text-grey-2 max-w-max ${color === "Verde" && "selected"}`}
           onClick={(e) => {
             color === "Verde" ? setColor("") : setColor("Verde");
           }}>
@@ -207,7 +206,7 @@ const Filters = () => {
       <div className="flex flex-col gap-1 justify-start pr-[250px]">
         <button
           type="button"
-          className={`text-sm text-grey-2 ${year === "2022" && "selected"}`}
+          className={`text-sm text-grey-2 max-w-max ${year === "2022" && "selected"}`}
           onClick={(e) => {
             year === "2022" ? setYear("") : setYear("2022");
           }}>
@@ -215,7 +214,7 @@ const Filters = () => {
         </button>
         <button
           type="button"
-          className={`text-sm text-grey-2 ${year === "2021" && "selected"}`}
+          className={`text-sm text-grey-2 max-w-max ${year === "2021" && "selected"}`}
           onClick={(e) => {
             year === "2021" ? setYear("") : setYear("2021");
           }}>
@@ -223,7 +222,7 @@ const Filters = () => {
         </button>
         <button
           type="button"
-          className={`text-sm text-grey-2 ${year === "2018" && "selected"}`}
+          className={`text-sm text-grey-2 max-w-max ${year === "2018" && "selected"}`}
           onClick={(e) => {
             year === "2018" ? setYear("") : setYear("2018");
           }}>
@@ -231,7 +230,7 @@ const Filters = () => {
         </button>
         <button
           type="button"
-          className={`text-sm text-grey-2 ${year === "2015" && "selected"}`}
+          className={`text-sm text-grey-2 max-w-max ${year === "2015" && "selected"}`}
           onClick={(e) => {
             year === "2015" ? setYear("") : setYear("2015");
           }}>
@@ -239,7 +238,7 @@ const Filters = () => {
         </button>
         <button
           type="button"
-          className={`text-sm text-grey-2 ${year === "2013" && "selected"}`}
+          className={`text-sm text-grey-2 max-w-max ${year === "2013" && "selected"}`}
           onClick={(e) => {
             year === "2013" ? setYear("") : setYear("2013");
           }}>
@@ -247,7 +246,7 @@ const Filters = () => {
         </button>
         <button
           type="button"
-          className={`text-sm text-grey-2 ${year === "2012" && "selected"}`}
+          className={`text-sm text-grey-2 max-w-max ${year === "2012" && "selected"}`}
           onClick={(e) => {
             year === "2012" ? setYear("") : setYear("2012");
           }}>
@@ -255,7 +254,7 @@ const Filters = () => {
         </button>
         <button
           type="button"
-          className={`text-sm text-grey-2 ${year === "2010" && "selected"}`}
+          className={`text-sm text-grey-2 max-w-max ${year === "2010" && "selected"}`}
           onClick={(e) => {
             year === "2010" ? setYear("") : setYear("2010");
           }}>
@@ -267,7 +266,7 @@ const Filters = () => {
       <div className="flex flex-col gap-1 justify-start pr-[250px]">
         <button
           type="button"
-          className={`text-sm text-grey-2 ${fuel === "Diesel" && "selected"}`}
+          className={`text-sm text-grey-2 max-w-max ${fuel === "Diesel" && "selected"}`}
           onClick={(e) => {
             setFuel("Diesel");
           }}>
@@ -275,7 +274,7 @@ const Filters = () => {
         </button>
         <button
           type="button"
-          className={`text-sm text-grey-2 ${fuel === "Gasolina" && "selected"}`}
+          className={`text-sm text-grey-2 max-w-max ${fuel === "Gasolina" && "selected"}`}
           onClick={(e) => {
             setFuel("Gasolina");
           }}>
@@ -283,7 +282,7 @@ const Filters = () => {
         </button>
         <button
           type="button"
-          className={`text-sm text-grey-2 ${fuel === "Etanol" && "selected"}`}
+          className={`text-sm text-grey-2 max-w-max ${fuel === "Etanol" && "selected"}`}
           onClick={(e) => {
             setFuel("Etanol");
           }}>
@@ -291,7 +290,7 @@ const Filters = () => {
         </button>
         <button
           type="button"
-          className={`text-sm text-grey-2 ${fuel === "Flex" && "selected"}`}
+          className={`text-sm text-grey-2 max-w-max ${fuel === "Flex" && "selected"}`}
           onClick={(e) => {
             setFuel("Flex");
           }}>

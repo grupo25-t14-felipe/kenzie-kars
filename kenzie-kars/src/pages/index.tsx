@@ -20,7 +20,7 @@ export default function Home({ announcements, token }: any) {
   const [windowWidth, setWindowWidth] = useState<number>(0);
   const [openFilter, setOpenFilter] = useState(false);
   const { setToken } = useAuth();
-  const { filterList } = useContext(FilterContext);
+  const { filterList, setFilterList } = useContext(FilterContext);
 
   useEffect(() => {
     setToken(token);
@@ -30,9 +30,11 @@ export default function Home({ announcements, token }: any) {
     };
     window.addEventListener("resize", handleResize);
     return () => {
-      window.removeEventListener("resize", handleResize);
+    window.removeEventListener("resize", handleResize);
     };
   }, []);
+  
+ 
 
   return (
     <>
@@ -56,7 +58,7 @@ export default function Home({ announcements, token }: any) {
         } flex min-h-screen relative ${inter.className} gap-20 pb-20 pt-14`}>
         <ul className="w-full md:w-[70%] flex overflow-auto md:flex-wrap relative h-full">
           {filterList.length > 0
-            ? filterList?.map((announcement: any) => (
+            ? filterList.map((announcement: any) => (
                 <Card key={announcement.id} announcement={announcement} onClickHabilit={true}>
                   <span></span>
                 </Card>

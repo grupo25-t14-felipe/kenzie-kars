@@ -19,34 +19,40 @@ interface ProfileProps {
 
 export default function Profile({ userAnnouncements }: ProfileProps) {
   const { router, token, showModal, setModal } = useAuth();
-  const [createAd, setCreateAd] = useState(false)
-  const [brands, setBrands] = useState<string[]>()
-  const [Announcemets, setAnnouncemets] = useState(userAnnouncements.announcement)
- 
-  const [updateAnnouncementModal, setUpdateAnnouncementModal] = useState(false)
-  const [announcement, setAnnouncement] = useState<Omit<iAnnouncement, 'user'> | null>(null)
-  
-  const requestBrands = async () => {
-    const brands = await getBrands()
-    setBrands(brands)
-    setCreateAd(true)
-  }
+  const [createAd, setCreateAd] = useState(false);
+  const [brands, setBrands] = useState<string[]>();
+  const [Announcemets, setAnnouncemets] = useState(userAnnouncements.announcement);
 
-  const editAnnouncement = (announcement: Omit<iAnnouncement, 'user'>) => {
-    setAnnouncement( announcement )
-    setUpdateAnnouncementModal(true)
-  }
- 
+  const [updateAnnouncementModal, setUpdateAnnouncementModal] = useState(false);
+  const [announcement, setAnnouncement] = useState<Omit<iAnnouncement, "user"> | null>(null);
+
+  const requestBrands = async () => {
+    const brands = await getBrands();
+    setBrands(brands);
+    setCreateAd(true);
+  };
+
+  const editAnnouncement = (announcement: Omit<iAnnouncement, "user">) => {
+    setAnnouncement(announcement);
+    setUpdateAnnouncementModal(true);
+  };
+
   return (
     <>
-      {createAd && <RegisterAnnouncement setCreateAd={setCreateAd} brands={brands} setAnnouncements={setAnnouncemets}/>}
-      {updateAnnouncementModal && 
-        <UpdateAnnouncement 
-          announcement={announcement} 
-          setAnnouncement={setAnnouncement} 
+      {createAd && (
+        <RegisterAnnouncement
+          setCreateAd={setCreateAd}
+          brands={brands}
+          setAnnouncements={setAnnouncemets}
+        />
+      )}
+      {updateAnnouncementModal && (
+        <UpdateAnnouncement
+          announcement={announcement}
+          setAnnouncement={setAnnouncement}
           setUpdateAnnouncementModal={setUpdateAnnouncementModal}
         />
-      }
+      )}
       <Header />
       <main
         className={`flex min-h-screen relative ${inter.className} gap-20 pt-[75px] bg-grey-8 body-1-400 z-10`}>
@@ -64,7 +70,13 @@ export default function Profile({ userAnnouncements }: ProfileProps) {
             </div>
             <p className="text-grey-2">{userAnnouncements.description}</p>
             {token && jwt_decode<any>(token).sub == userAnnouncements.id ? (
-              <button className="medium-outline-brand-1 max-w-max" onClick={() => {requestBrands()}}>Criar anuncio</button>
+              <button
+                className="medium-outline-brand-1 max-w-max"
+                onClick={() => {
+                  requestBrands();
+                }}>
+                Criar anuncio
+              </button>
             ) : null}
           </div>
           <h3 className="heading-5-600 text-left w-full pl-[8%]">Anúncios</h3>
@@ -73,17 +85,24 @@ export default function Profile({ userAnnouncements }: ProfileProps) {
               <Card
                 key={announcement.id}
                 announcement={announcement}
-                userAnnouncement={userAnnouncements}
-                onClickHabilit={false}
-              >
+                user={userAnnouncements}
+                onClickHabilit={false}>
                 {token && jwt_decode<any>(token).sub == userAnnouncements.id ? (
                   <div className="flex gap-4">
-                    <button className="small-outline-1 max-w-max" onClick={() => {
-                      editAnnouncement(announcement)}
-                    }>
+                    <button
+                      className="small-outline-1 max-w-max"
+                      onClick={() => {
+                        editAnnouncement(announcement);
+                      }}>
                       Editar
                     </button>
-                    <button className="small-outline-1 max-w-max truncate">Ver detalhes</button>
+                    <button
+                      className="small-outline-1 max-w-max truncate"
+                      onClick={() => {
+                        router.push(`/announcement/${announcement.id}`);
+                      }}>
+                      Ver detalhes
+                    </button>
                   </div>
                 ) : (
                   <span
@@ -113,7 +132,7 @@ export default function Profile({ userAnnouncements }: ProfileProps) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const userId = context.params?.id;
   const response = await api.get<iUserAnnouncements>(`/users/${userId}`);
-  
+
   return {
     props: { userAnnouncements: response.data }
   };

@@ -11,7 +11,7 @@ interface ICardProps {
   onClickHabilit: boolean
 }
 
-const Card = ({ children, announcement, userAnnouncement, onClickHabilit }: any) => {
+const Card = ({ children, announcement, user, onClickHabilit }: any) => {
   const router = useRouter();
   const [validImg, setValidImg] = useState(true)
 
@@ -43,7 +43,7 @@ const Card = ({ children, announcement, userAnnouncement, onClickHabilit }: any)
       <p className="w-full line-clamp-2">
         {announcement?.description}
       </p>
-      <Profile name={userAnnouncement?.name} />
+      <Profile name={announcement?.user?.name || user?.name} />
       <div className=" flex justify-between font-bold items-center">
         <div className="flex">
           <p className="bg-brand-4 text-brand-2 mr-4 p-2 rounded max-w-[40%] truncate">{`${announcement?.mileage}KM`}</p>
