@@ -63,8 +63,8 @@ export default function Home({ announcements, token }: any) {
                   <span></span>
                 </Card>
               ))
-            : <div>
-              <h2>Não foi encontrado nenhum resultado de busca.</h2>
+            : <div className="w-full md:w-[70%] flex overflow-auto md:flex-wrap relative h-full text-center">
+              <h2 className="w-full h-full font-semibold p-[150px]">Não foi encontrado nenhum resultado de busca.</h2>
               </div>}
           <div className="w-full font-semibold md:flex gap-8 justify-center items-center hidden">
             <p className="text-grey-3">
