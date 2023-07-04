@@ -81,7 +81,7 @@ export default function Profile({ userAnnouncements }: ProfileProps) {
           </div>
           <h3 className="heading-5-600 text-left w-full pl-[8%]">Anúncios</h3>
           <ul className="w-full md:w-[80%] flex overflow-auto md:flex-wrap relative h-full">
-            {Announcemets.map((announcement) => (
+            {Announcemets.length > 0 ? Announcemets.map((announcement) => (
               <Card
                 key={announcement.id}
                 announcement={announcement}
@@ -113,7 +113,9 @@ export default function Profile({ userAnnouncements }: ProfileProps) {
                   </span>
                 )}
               </Card>
-            ))}
+            )) : <div className="w-full h-full font-semibold flex flex-col text-center gap-4">
+            <h2 className="w-full h-full font-semibold p-[50px]">Não foi encontrado nenhum anúncio.</h2>
+            </div>}
           </ul>
           <div className="w-full font-semibold flex flex-col items-center gap-4">
             <p className="text-grey-3">
