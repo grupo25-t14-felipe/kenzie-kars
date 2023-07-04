@@ -6,6 +6,8 @@ import axios from "axios";
 import api from "@/services/api";
 import { useAuth } from "@/contexts/authContext";
 import jwt_decode from "jwt-decode";
+import { iUserResponse } from "@/schemas/user.schema";
+import { iAnnouncement, iUpdateAnnouncementRequest, iUserType } from "@/schemas/announcement.schema";
 
 interface iModel {
   id: string
@@ -19,21 +21,7 @@ interface iModel {
 interface iRegisterAnnouncement {
   setCreateAd: Dispatch<SetStateAction<boolean>>,
   brands: string[] | undefined
-  setAnnouncements: Dispatch<SetStateAction<{
-    brand: string;
-    model: string;
-    year: string;
-    fuel: string;
-    mileage: string;
-    color: string;
-    price_table_fipe: string;
-    price: string;
-    description: string;
-    cover_image: string;
-    published: boolean;
-    id: string;
-    createdAt: string;
-}[]>>
+  setAnnouncements: Dispatch<SetStateAction<iAnnouncement[]>>
 }
 
 interface iImageGalery {

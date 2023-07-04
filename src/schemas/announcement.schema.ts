@@ -40,8 +40,6 @@ const updateAnnouncementSchemaReturn = updateAnnouncementSchema.extend({
   createdAt: z.string().optional()
 });
 
-const returnAnnouncementSchemaAll = createAnnouncementSchema.array();
-
 const userSchema = z.object({
   name: z.string(),
   cpf: z.string(),
@@ -54,16 +52,16 @@ const userSchema = z.object({
 });
 
 const createUserSchema = userSchema
-  .extend({
-    id: z.string(),
-    createdAt: z.string()
-  })
-  .omit({
-    password: true
-  });
+.extend({
+  id: z.string(),
+  createdAt: z.string()
+})
+.omit({
+  password: true
+});
 
-  const commentSchema = z.object({
-    description: z.string(),
+const commentSchema = z.object({
+  description: z.string(),
   });
   
   const createCommentSchema = commentSchema.extend({
@@ -72,15 +70,18 @@ const createUserSchema = userSchema
     user: createUserSchema
   });
 
-const UserAnnouncementsSchema = createUserSchema.extend({
+  const returnAnnouncementSchema = createAnnouncementSchema.extend({
+    user: createUserSchema,
+    comment: createCommentSchema.array()
+  });
+
+  const returnAnnouncementSchemaAll = returnAnnouncementSchema.array();
+  
+  const UserAnnouncementsSchema = createUserSchema.extend({
   announcement: returnAnnouncementSchemaAll
 });
 
 
-const returnAnnouncementSchema = createAnnouncementSchema.extend({
-  user: createUserSchema,
-  comment: createCommentSchema.array()
-});
 
 export const UpdateeAnnouncementSchema = z.object({
   mileage: z.string(),
@@ -96,3 +97,4 @@ export type iAllAnnouncements = z.infer<typeof returnAnnouncementSchemaAll>;
 export type iAnnouncement = z.infer<typeof returnAnnouncementSchema>;
 export type iUpdateAnnouncementRequest = z.infer<typeof UpdateeAnnouncementSchema>;
 export type iComment = z.infer<typeof commentSchema>;
+export type iUserType = z.infer<typeof createUserSchema>;
