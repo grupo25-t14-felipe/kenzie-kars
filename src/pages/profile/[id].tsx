@@ -49,7 +49,7 @@ export default function Profile({ userAnnouncements }: ProfileProps) {
       {updateAnnouncementModal && (
         <UpdateAnnouncement
           announcement={announcement}
-          setAnnouncement={setAnnouncement}
+          setAnnouncemets={setAnnouncemets}
           setUpdateAnnouncementModal={setUpdateAnnouncementModal}
         />
       )}

@@ -96,7 +96,9 @@ export default function Announcement({ announcement }: ProfileProps) {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2
                   }).format(Number(announcement?.price))}`}</p>
-                  <button className="small-brand-1 max-w-max">Comprar</button>
+                  {token && <button className="small-brand-1 max-w-max" onClick={(()=>{
+                    window.location.href = `https://api.whatsapp.com/send?phone=${announcement.user.telephone}`
+                  })}>Comprar</button>}
                 </div>
 
                 <div className="flex flex-col gap-8 bg-whiteFixed rounded p-8 ">
