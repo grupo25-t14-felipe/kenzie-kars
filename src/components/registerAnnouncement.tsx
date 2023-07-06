@@ -90,10 +90,6 @@ const RegisterAnnouncement = ({ setCreateAd, brands, setAnnouncements }: iRegist
         Authorization: `Bearer ${token}`,
       },
     }).then( async (res: any) => {
-      res = await api.get(`/users/${jwt_decode<any>(token).sub}`)
-      setAnnouncements(res.data.announcement)
-      setCreateAd(false)
-      setModal(true);
       if( images ){
         await images.map( async (image: typeof CreateImageSchema) => {
           await api.post( `/image/announcement/${res.data.id}`, image ).then( resImage => {
@@ -101,6 +97,13 @@ const RegisterAnnouncement = ({ setCreateAd, brands, setAnnouncements }: iRegist
           })
         })
       }
+
+      return res;
+    }).then( async (res: any) => {
+      res = await api.get(`/users/${jwt_decode<any>(token).sub}`)
+      setAnnouncements(res.data.announcement)
+      setCreateAd(false)
+      setModal(true);      
 
       reset();
       setCreateAd(false);
