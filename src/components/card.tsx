@@ -52,7 +52,11 @@ const Card = ({ children, announcement, user, onClickHabilit }: any) => {
         <p className="max-w-[40%] truncate">{`R$ ${new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(announcement?.price)}`}</p>
       </div>
       {children}
+      {(announcement.price_table_fipe - announcement.price) >= (announcement.price_table_fipe*0.1) &&
+      <span className=" bg-random-7 w-[18px] h-[27px] text-brand-4 rounded flex items-center justify-center absolute right-4">$</span>
+    }
     </li>
+      
   );
 };
 
